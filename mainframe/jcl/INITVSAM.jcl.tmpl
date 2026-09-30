@@ -1,0 +1,10 @@
+//INITVSAM JOB (ACCT01),'INIT VSAM MASTER',CLASS=A,MSGCLASS=X
+//*===================================================================*
+//* JCL TEMPLATE: INITVSAM                                            *
+//* INITIALIZES ACCOUNT MASTER VSAM KSDS (ACCTMSTR) VIA ACCTINIT      *
+//*===================================================================*
+//STEP001  EXEC PGM=ACCTINIT
+//ACCTIN   DD DSN=&SEEDDSN,DISP=SHR
+//ACCTMSTR DD DSN=&KSDSDSN,DISP=SHR
+//SYSOUT   DD SYSOUT=*
+//

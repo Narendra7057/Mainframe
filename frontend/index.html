@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mainframe Bank — Transaction Reconciliation System</title>
+  <meta name="description" content="Enterprise-grade mainframe banking transaction reconciliation dashboard with real-time JCL job submission, reconciliation analytics, audit trails, and dataset catalog browser." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ═══════════════════ SIDEBAR ═══════════════════ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="32" height="32" rx="8" fill="url(#logoGrad)"/>
+            <path d="M8 22V14L16 10L24 14V22" stroke="white" stroke-width="1.8" stroke-linejoin="round"/>
+            <path d="M12 22V17H20V22" stroke="white" stroke-width="1.8" stroke-linejoin="round"/>
+            <path d="M8 14H24" stroke="white" stroke-width="1.8"/>
+            <circle cx="16" cy="10" r="1.5" fill="white"/>
+            <defs>
+              <linearGradient id="logoGrad" x1="0" y1="0" x2="32" y2="32">
+                <stop offset="0%" stop-color="#6366f1"/>
+                <stop offset="100%" stop-color="#8b5cf6"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <span class="logo-title">MainframeBank</span>
+          <span class="logo-sub">Recon System v1.0</span>
+        </div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" data-tab="dashboard" id="nav-dashboard">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        <span>Dashboard</span>
+      </a>
+      <a href="#" class="nav-item" data-tab="jcl" id="nav-jcl">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        <span>Run Jobs</span>
+      </a>
+      <a href="#" class="nav-item" data-tab="results" id="nav-results">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        <span>Recon Results</span>
+      </a>
+      <a href="#" class="nav-item" data-tab="audit" id="nav-audit">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        <span>Audit Log</span>
+      </a>
+      <a href="#" class="nav-item" data-tab="catalog" id="nav-catalog">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        <span>Dataset Catalog</span>
+      </a>
+      <a href="#" class="nav-item" data-tab="spool" id="nav-spool">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+        <span>JES Spool</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="ws-indicator" id="ws-indicator">
+        <div class="ws-dot" id="ws-dot"></div>
+        <span id="ws-status">Connecting…</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════ MAIN CONTENT ═══════════════════ -->
+  <main class="main-content" id="main-content">
+
+    <!-- ══ TOPBAR ══ -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <h1 class="page-title" id="page-title">Dashboard</h1>
+        <span class="page-breadcrumb" id="page-breadcrumb">Overview &amp; Analytics</span>
+      </div>
+      <div class="topbar-right">
+        <div class="time-badge" id="time-badge"></div>
+        <button class="btn-primary" id="run-bankrecn-btn" title="Run nightly BANKRECN reconciliation job">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Run BANKRECN
+        </button>
+      </div>
+    </header>
+
+    <!-- ══════════════════════════════════════════════════ -->
+    <!-- TAB: DASHBOARD                                     -->
+    <!-- ══════════════════════════════════════════════════ -->
+    <section class="tab-content active" id="tab-dashboard">
+      <div class="stats-grid" id="stats-grid">
+        <div class="stat-card" id="stat-total">
+          <div class="stat-icon stat-icon--blue">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3H8a2 2 0 00-2 2v2h12V5a2 2 0 00-2-2z"/></svg>
+          </div>
+          <div class="stat-body">
+            <div class="stat-value" id="sv-total">—</div>
+            <div class="stat-label">Total Transactions</div>
+          </div>
+          <div class="stat-trend" id="st-total"></div>
+        </div>
+        <div class="stat-card" id="stat-matched">
+          <div class="stat-icon stat-icon--green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <div class="stat-body">
+            <div class="stat-value" id="sv-matched">—</div>
+            <div class="stat-label">Matched</div>
+          </div>
+        </div>
+        <div class="stat-card" id="stat-mismatch">
+          <div class="stat-icon stat-icon--amber">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div class="stat-body">
+            <div class="stat-value" id="sv-mismatch">—</div>
+            <div class="stat-label">Amount Mismatch</div>
+          </div>
+        </div>
+        <div class="stat-card" id="stat-missing">
+          <div class="stat-icon stat-icon--red">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+          </div>
+          <div class="stat-body">
+            <div class="stat-value" id="sv-missing">—</div>
+            <div class="stat-label">Missing (Bank/Core)</div>
+          </div>
+        </div>
+        <div class="stat-card" id="stat-dup">
+          <div class="stat-icon stat-icon--purple">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          </div>
+          <div class="stat-body">
+            <div class="stat-value" id="sv-dup">—</div>
+            <div class="stat-label">Duplicates</div>
+          </div>
+        </div>
+        <div class="stat-card" id="stat-jobs">
+          <div class="stat-icon stat-icon--cyan">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 19.07a10 10 0 010-14.14"/></svg>
+          </div>
+          <div class="stat-body">
+            <div class="stat-value" id="sv-jobs">—</div>
+            <div class="stat-label">Jobs Today</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts row -->
+      <div class="charts-row">
+        <div class="chart-card">
+          <div class="chart-title">Reconciliation Breakdown</div>
+          <div class="donut-wrapper">
+            <canvas id="donut-chart" width="180" height="180"></canvas>
+            <div class="donut-legend" id="donut-legend"></div>
+          </div>
+        </div>
+        <div class="chart-card" style="flex:1">
+          <div class="chart-title">Last Job — Step Execution</div>
+          <div id="step-timeline" class="step-timeline">
+            <div class="empty-state">Run a BANKRECN job to see step execution.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live feed -->
+      <div class="live-feed-card">
+        <div class="live-feed-header">
+          <span class="live-dot pulse"></span>
+          <span class="live-feed-title">Live Event Feed</span>
+          <button class="btn-ghost" id="clear-feed-btn">Clear</button>
+        </div>
+        <div class="live-feed-body" id="live-feed"></div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════ -->
+    <!-- TAB: RUN JOBS                                      -->
+    <!-- ══════════════════════════════════════════════════ -->
+    <section class="tab-content" id="tab-jcl">
+      <div class="job-panel">
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+          <h2 class="section-title">Quick Actions</h2>
+          <div class="quick-grid">
+            <button class="quick-card" id="qbtn-bankrecn">
+              <div class="quick-icon">⚡</div>
+              <div class="quick-label">Run BANKRECN</div>
+              <div class="quick-desc">Full nightly reconciliation job stream</div>
+            </button>
+            <button class="quick-card" id="qbtn-template">
+              <div class="quick-icon">📄</div>
+              <div class="quick-label">Load Template</div>
+              <div class="quick-desc">Browse and load a JCL template</div>
+            </button>
+            <button class="quick-card" id="qbtn-upload">
+              <div class="quick-icon">📤</div>
+              <div class="quick-label">Upload JCL</div>
+              <div class="quick-desc">Upload and execute a .jcl file</div>
+            </button>
+            <button class="quick-card" id="qbtn-test">
+              <div class="quick-icon">🧪</div>
+              <div class="quick-label">Run Test Suite</div>
+              <div class="quick-desc">Execute automated regression tests</div>
+            </button>
+          </div>
+        </div>
+
+        <!-- JCL Editor -->
+        <div class="editor-section">
+          <div class="editor-toolbar">
+            <span class="editor-label">JCL Editor</span>
+            <div class="editor-actions">
+              <select id="template-select" class="select-input">
+                <option value="">— Load Template —</option>
+              </select>
+              <label class="btn-ghost upload-label" for="jcl-upload-input">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                Upload File
+              </label>
+              <input type="file" id="jcl-upload-input" accept=".jcl,.tmpl,.txt" style="display:none" />
+              <button class="btn-primary" id="submit-jcl-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                Submit Job
+              </button>
+            </div>
+          </div>
+          <textarea class="jcl-editor" id="jcl-editor" spellcheck="false" placeholder="//MYJOB JOB (ACCT01),'MY TEST',CLASS=A&#10;//STEP01  EXEC PGM=IEFBR14&#10;//SYSOUT  DD SYSOUT=*"></textarea>
+        </div>
+
+        <!-- BANKRECN params -->
+        <div class="params-section" id="bankrecn-params">
+          <h2 class="section-title">BANKRECN Parameters</h2>
+          <div class="params-row">
+            <div class="param-field">
+              <label>Business Date (YYYYMMDD)</label>
+              <input type="text" id="busdate-input" class="input-field" placeholder="20260930" maxlength="8" />
+            </div>
+            <div class="param-field">
+              <label>Environment</label>
+              <select id="env-select" class="select-input">
+                <option value="PROD">PROD</option>
+                <option value="TEST">TEST</option>
+                <option value="DEV">DEV</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Job progress -->
+        <div class="job-progress-section" id="job-progress" style="display:none">
+          <h2 class="section-title">Job Execution Progress</h2>
+          <div class="job-progress-bar-wrap">
+            <div class="progress-bar-track"><div class="progress-bar-fill" id="progress-fill"></div></div>
+            <span id="progress-label">Initializing…</span>
+          </div>
+          <div class="step-cards" id="step-cards"></div>
+        </div>
+
+        <!-- Job output -->
+        <div class="job-output-section" id="job-output" style="display:none">
+          <div class="job-output-header">
+            <span class="section-title">Job Output</span>
+            <button class="btn-ghost" id="clear-output-btn">Clear</button>
+          </div>
+          <pre class="job-output-pre" id="job-output-pre"></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════ -->
+    <!-- TAB: RESULTS                                       -->
+    <!-- ══════════════════════════════════════════════════ -->
+    <section class="tab-content" id="tab-results">
+      <div class="results-toolbar">
+        <h2 class="section-title">Reconciliation Results</h2>
+        <div class="filters-row">
+          <select id="filter-status" class="select-input">
+            <option value="">All Statuses</option>
+            <option value="MATCHED">MATCHED</option>
+            <option value="AMOUNT-MISMATCH">AMOUNT-MISMATCH</option>
+            <option value="MISSING-IN-BANK">MISSING-IN-BANK</option>
+            <option value="MISSING-IN-CORE">MISSING-IN-CORE</option>
+            <option value="DUPLICATE">DUPLICATE</option>
+          </select>
+          <input type="text" id="filter-account" class="input-field" placeholder="Account number…" />
+          <input type="date" id="filter-date" class="input-field" />
+          <button class="btn-primary" id="apply-filters-btn">Filter</button>
+          <button class="btn-ghost" id="clear-filters-btn">Clear</button>
+          <button class="btn-ghost" id="refresh-results-btn">↻ Refresh</button>
+        </div>
+      </div>
+      <div class="table-wrapper">
+        <table class="data-table" id="results-table">
+          <thead>
+            <tr>
+              <th>Status</th>
+              <th>Account</th>
+              <th>TXN Ref</th>
+              <th>Date</th>
+              <th>Core Amt</th>
+              <th>Bank Amt</th>
+              <th>Diff</th>
+              <th>Currency</th>
+              <th>Channel</th>
+              <th>Reason</th>
+              <th>Account Name</th>
+            </tr>
+          </thead>
+          <tbody id="results-tbody">
+            <tr><td colspan="11" class="empty-row">No results yet. Run a BANKRECN job first.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-footer" id="results-footer"></div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════ -->
+    <!-- TAB: AUDIT LOG                                     -->
+    <!-- ══════════════════════════════════════════════════ -->
+    <section class="tab-content" id="tab-audit">
+      <div class="results-toolbar">
+        <h2 class="section-title">Job Audit Log</h2>
+        <button class="btn-ghost" id="refresh-audit-btn">↻ Refresh</button>
+      </div>
+      <div class="table-wrapper">
+        <table class="data-table" id="audit-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Job ID</th>
+              <th>Job Name</th>
+              <th>Status</th>
+              <th>Max RC</th>
+              <th>Rows</th>
+              <th>System</th>
+              <th>JCL Used</th>
+              <th>Timestamp</th>
+            </tr>
+          </thead>
+          <tbody id="audit-tbody">
+            <tr><td colspan="9" class="empty-row">No audit entries yet.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════ -->
+    <!-- TAB: DATASET CATALOG                              -->
+    <!-- ══════════════════════════════════════════════════ -->
+    <section class="tab-content" id="tab-catalog">
+      <div class="results-toolbar">
+        <h2 class="section-title">Dataset Catalog</h2>
+        <div class="filters-row">
+          <input type="text" id="catalog-prefix" class="input-field" placeholder="Filter prefix (e.g. BANK.PROD)…" />
+          <button class="btn-primary" id="browse-catalog-btn">Browse</button>
+          <button class="btn-ghost" id="refresh-catalog-btn">↻ Refresh</button>
+        </div>
+      </div>
+      <div class="catalog-grid">
+        <div class="catalog-panel">
+          <div class="catalog-panel-title">Datasets</div>
+          <div class="table-wrapper">
+            <table class="data-table" id="catalog-table">
+              <thead>
+                <tr>
+                  <th>Dataset Name</th>
+                  <th>Type</th>
+                  <th>RECFM</th>
+                  <th>LRECL</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="catalog-tbody">
+                <tr><td colspan="6" class="empty-row">Click Browse to load catalog.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="catalog-panel">
+          <div class="catalog-panel-title">GDG Bases</div>
+          <div class="table-wrapper">
+            <table class="data-table" id="gdg-table">
+              <thead>
+                <tr>
+                  <th>GDG Base Name</th>
+                  <th>Limit</th>
+                  <th>Generations</th>
+                  <th>Scratch</th>
+                </tr>
+              </thead>
+              <tbody id="gdg-tbody">
+                <tr><td colspan="4" class="empty-row">No GDG bases.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- Dataset reader panel -->
+      <div class="dataset-reader" id="dataset-reader" style="display:none">
+        <div class="dataset-reader-header">
+          <span id="dataset-reader-title">Dataset: </span>
+          <button class="btn-ghost" id="close-reader-btn">✕ Close</button>
+        </div>
+        <pre class="dataset-reader-pre" id="dataset-reader-pre"></pre>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════ -->
+    <!-- TAB: JES SPOOL                                     -->
+    <!-- ══════════════════════════════════════════════════ -->
+    <section class="tab-content" id="tab-spool">
+      <div class="results-toolbar">
+        <h2 class="section-title">JES Spool Viewer</h2>
+        <div class="filters-row">
+          <input type="text" id="spool-jobid" class="input-field" placeholder="Job ID (e.g. JOB00101)…" />
+          <button class="btn-primary" id="load-spool-btn">Load Spool</button>
+        </div>
+      </div>
+      <pre class="spool-output" id="spool-output">Enter a Job ID and click Load Spool to view JES output.</pre>
+    </section>
+  </main>
+
+  <!-- ═══════════════════ TOAST CONTAINER ═══════════════════ -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- ═══════════════════ BANKRECN MODAL ════════════════════ -->
+  <div class="modal-overlay" id="bankrecn-modal" style="display:none">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Run Nightly BANKRECN Job</h3>
+        <button class="btn-ghost" id="modal-close-btn">✕</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-desc">This will seed the ACCTMSTR, CORETXN, and BANKTXN datasets and run the full BANKRECN reconciliation job stream.</p>
+        <div class="modal-fields">
+          <div class="param-field">
+            <label>Business Date (YYYYMMDD)</label>
+            <input type="text" id="modal-busdate" class="input-field" placeholder="20260930" maxlength="8" />
+          </div>
+          <div class="param-field">
+            <label>Environment</label>
+            <select id="modal-env" class="select-input">
+              <option value="PROD">PROD</option>
+              <option value="TEST">TEST</option>
+              <option value="DEV">DEV</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-ghost" id="modal-cancel-btn">Cancel</button>
+        <button class="btn-primary" id="modal-run-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Run BANKRECN
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

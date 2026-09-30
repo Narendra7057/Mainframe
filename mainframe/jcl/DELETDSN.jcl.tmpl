@@ -1,0 +1,9 @@
+//DELETDSN JOB (ACCT01),'DELETE DATASET',CLASS=A,MSGCLASS=X
+//*===================================================================*
+//* JCL TEMPLATE: DELETDSN                                            *
+//* DELETES A DATASET VIA IEFBR14 OR IDCAMS DELETE PURGE              *
+//*===================================================================*
+//STEP001  EXEC PGM=IEFBR14
+//OLDDSN   DD DSN=&DSNAME,
+//            DISP=(OLD,DELETE)
+//

@@ -1,0 +1,11 @@
+//COPYDSN  JOB (ACCT01),'COPY DATASET',CLASS=A,MSGCLASS=X
+//*===================================================================*
+//* JCL TEMPLATE: COPYDSN                                             *
+//* COPIES A SEQUENTIAL OR VSAM DATASET VIA IEBGENER OR IDCAMS REPRO  *
+//*===================================================================*
+//STEP001  EXEC PGM=IEBGENER
+//SYSUT1   DD DSN=&FROMDSN,DISP=SHR
+//SYSUT2   DD DSN=&TODSN,DISP=SHR
+//SYSPRINT DD SYSOUT=*
+//SYSIN    DD DUMMY
+//

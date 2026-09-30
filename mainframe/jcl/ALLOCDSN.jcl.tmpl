@@ -1,0 +1,13 @@
+//ALLOCDSN JOB (ACCT01),'ALLOCATE DATASET',CLASS=A,MSGCLASS=X
+//*===================================================================*
+//* JCL TEMPLATE: ALLOCDSN                                            *
+//* ALLOCATES A NEW SEQUENTIAL OR PARTITIONED DATASET VIA IEFBR14     *
+//*===================================================================*
+//STEP001  EXEC PGM=IEFBR14
+//NEWDSN   DD DSN=&DSNAME,
+//            DISP=(NEW,CATLG,DELETE),
+//            UNIT=&UNIT,
+//            VOL=SER=&VOLSER,
+//            SPACE=(&SPACETYPE,(&PRIMARY,&SECONDARY),RLSE),
+//            DCB=(RECFM=&RECFM,LRECL=&LRECL,BLKSIZE=&BLKSIZE)
+//

@@ -1,0 +1,19 @@
+//DEFVSAM  JOB (ACCT01),'DEFINE VSAM KSDS',CLASS=A,MSGCLASS=X
+//*===================================================================*
+//* JCL TEMPLATE: DEFVSAM                                             *
+//* DEFINES A VSAM KEY-SEQUENCED DATASET (KSDS) CLUSTER VIA IDCAMS   *
+//*===================================================================*
+//STEP001  EXEC PGM=IDCAMS
+//SYSPRINT DD SYSOUT=*
+//SYSIN    DD *
+  DEFINE CLUSTER -
+    (NAME(&DSNAME) -
+     KEYS(&KEYLEN &KEYOFFSET) -
+     RECORDSIZE(&AVGREC &MAXREC) -
+     FREESPACE(10 10) -
+     VOLUMES(&VOLSER) -
+     CYLINDERS(&PRIMARY 2)) -
+    DATA (NAME(&DSNAME..DATA)) -
+    INDEX (NAME(&DSNAME..INDEX))
+/*
+//

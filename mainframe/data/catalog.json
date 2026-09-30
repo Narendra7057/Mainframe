@@ -1,0 +1,178 @@
+{
+  "datasets": {
+    "BANK.TEST.PS01": {
+      "name": "BANK.TEST.PS01",
+      "baseName": "BANK.TEST.PS01",
+      "type": "PS",
+      "recfm": "FB",
+      "lrecl": 80,
+      "blksize": 800,
+      "space": "(TRK,(5,2))",
+      "unit": "SYSDA",
+      "volser": "WORK01",
+      "cataloged": true,
+      "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\TEST\\PS01.dat",
+      "created": "2026-09-30T05:02:58.605Z",
+      "updated": "2026-09-30T05:02:58.617Z"
+    },
+    "BANK.TEST.KSDS01": {
+      "name": "BANK.TEST.KSDS01",
+      "type": "VSAM_KSDS",
+      "recfm": "FB",
+      "lrecl": 80,
+      "blksize": 800,
+      "keys": {
+        "length": 12,
+        "offset": 0
+      },
+      "recordsize": {
+        "avg": 80,
+        "max": 80
+      },
+      "freespace": [
+        10,
+        10
+      ],
+      "unit": "SYSDA",
+      "volser": "WORK01",
+      "space": {
+        "unit": "CYL",
+        "primary": 5,
+        "secondary": 2
+      },
+      "cataloged": true,
+      "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\TEST\\KSDS01.dat",
+      "created": "2026-09-30T05:02:58.658Z",
+      "updated": "2026-09-30T05:02:58.658Z"
+    },
+    "BANK.TEST.GDGBASE.G0001V00": {
+      "name": "BANK.TEST.GDGBASE.G0001V00",
+      "baseName": "BANK.TEST.GDGBASE",
+      "type": "GDG_GEN",
+      "recfm": "FB",
+      "lrecl": 80,
+      "blksize": 800,
+      "space": null,
+      "unit": "SYSDA",
+      "volser": "WORK01",
+      "cataloged": true,
+      "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\TEST\\GDGBASE\\G0001V00.dat",
+      "created": "2026-09-30T05:02:58.698Z",
+      "updated": "2026-09-30T05:02:58.698Z"
+    },
+    "BANK.PROD.ACCTMSTR": {
+      "name": "BANK.PROD.ACCTMSTR",
+      "type": "VSAM_KSDS",
+      "recfm": "FB",
+      "lrecl": 80,
+      "blksize": 800,
+      "keys": {
+        "length": 12,
+        "offset": 0
+      },
+      "recordsize": {
+        "avg": 80,
+        "max": 80
+      },
+      "freespace": [
+        10,
+        10
+      ],
+      "unit": "SYSDA",
+      "volser": "WORK01",
+      "space": {
+        "unit": "TRK",
+        "primary": 5,
+        "secondary": 2
+      },
+      "cataloged": true,
+      "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\ACCTMSTR.dat",
+      "created": "2026-09-30T08:43:07.686Z",
+      "updated": "2026-09-30T08:43:07.714Z"
+    },
+    "BANK.PROD.CORETXN": {
+      "name": "BANK.PROD.CORETXN",
+      "baseName": "BANK.PROD.CORETXN",
+      "type": "PS",
+      "recfm": "FB",
+      "lrecl": 80,
+      "blksize": 800,
+      "space": {
+        "unit": "TRK",
+        "primary": 5,
+        "secondary": 2
+      },
+      "unit": "SYSDA",
+      "volser": "WORK01",
+      "cataloged": true,
+      "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\CORETXN.dat",
+      "created": "2026-09-30T08:43:07.754Z",
+      "updated": "2026-09-30T08:43:07.786Z"
+    },
+    "BANK.PROD.BANKTXN": {
+      "name": "BANK.PROD.BANKTXN",
+      "baseName": "BANK.PROD.BANKTXN",
+      "type": "PS",
+      "recfm": "FB",
+      "lrecl": 80,
+      "blksize": 800,
+      "space": {
+        "unit": "TRK",
+        "primary": 5,
+        "secondary": 2
+      },
+      "unit": "SYSDA",
+      "volser": "WORK01",
+      "cataloged": true,
+      "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\BANKTXN.dat",
+      "created": "2026-09-30T08:43:07.818Z",
+      "updated": "2026-09-30T08:43:07.850Z"
+    }
+  },
+  "gdgBases": {
+    "BANK.TEST.GDGBASE": {
+      "name": "BANK.TEST.GDGBASE",
+      "limit": 3,
+      "scratch": true,
+      "generations": [
+        {
+          "genNumber": 1,
+          "dsname": "BANK.TEST.GDGBASE.G0001V00",
+          "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\TEST\\GDGBASE\\G0001V00.dat",
+          "created": "2026-09-30T05:02:58.698Z"
+        }
+      ],
+      "created": "2026-09-30T05:02:58.679Z"
+    },
+    "BANK.PROD.RECON.RPTSUM": {
+      "name": "BANK.PROD.RECON.RPTSUM",
+      "limit": 5,
+      "scratch": true,
+      "generations": [],
+      "created": "2026-09-30T08:43:07.878Z"
+    },
+    "BANK.PROD.RECON.RPTMAT": {
+      "name": "BANK.PROD.RECON.RPTMAT",
+      "limit": 5,
+      "scratch": true,
+      "generations": [],
+      "created": "2026-09-30T08:43:07.915Z"
+    },
+    "BANK.PROD.RECON.RPTEXC": {
+      "name": "BANK.PROD.RECON.RPTEXC",
+      "limit": 5,
+      "scratch": true,
+      "generations": [],
+      "created": "2026-09-30T08:43:07.949Z"
+    },
+    "BANK.PROD.RECON.RPTREJ": {
+      "name": "BANK.PROD.RECON.RPTREJ",
+      "limit": 5,
+      "scratch": true,
+      "generations": [],
+      "created": "2026-09-30T08:43:07.978Z"
+    }
+  },
+  "version": "1.0",
+  "system": "MVS/ESA 3.8J - GNUCBO EMULATOR"
+}

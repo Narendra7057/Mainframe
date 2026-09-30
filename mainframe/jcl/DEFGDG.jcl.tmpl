@@ -1,0 +1,14 @@
+//DEFGDG   JOB (ACCT01),'DEFINE GDG BASE',CLASS=A,MSGCLASS=X
+//*===================================================================*
+//* JCL TEMPLATE: DEFGDG                                              *
+//* DEFINES A GENERATION DATA GROUP (GDG) BASE VIA IDCAMS             *
+//*===================================================================*
+//STEP001  EXEC PGM=IDCAMS
+//SYSPRINT DD SYSOUT=*
+//SYSIN    DD *
+  DEFINE GDG -
+    (NAME(&DSNAME) -
+     LIMIT(&LIMIT) -
+     &OPTION)
+/*
+//

@@ -1,0 +1,11 @@
+//RENAMDSN JOB (ACCT01),'RENAME DATASET',CLASS=A,MSGCLASS=X
+//*===================================================================*
+//* JCL TEMPLATE: RENAMDSN                                            *
+//* RENAMES A DATASET ENTRY IN CATALOG VIA IDCAMS ALTER               *
+//*===================================================================*
+//STEP001  EXEC PGM=IDCAMS
+//SYSPRINT DD SYSOUT=*
+//SYSIN    DD *
+  ALTER &OLDDSN NEWNAME(&NEWDSN)
+/*
+//

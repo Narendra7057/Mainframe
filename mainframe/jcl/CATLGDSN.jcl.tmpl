@@ -1,0 +1,11 @@
+//CATLGDSN JOB (ACCT01),'CATALOG DATASET',CLASS=A,MSGCLASS=X
+//*===================================================================*
+//* JCL TEMPLATE: CATLGDSN                                            *
+//* CATALOGS OR UNCATALOGS A DATASET VIA IEHPROGM                     *
+//*===================================================================*
+//STEP001  EXEC PGM=IEHPROGM
+//SYSPRINT DD SYSOUT=*
+//SYSIN    DD *
+  &ACTION DSNAME=&DSNAME
+/*
+//
