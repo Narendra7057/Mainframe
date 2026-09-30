@@ -2,7 +2,7 @@
   "jobId": "JOB00105",
   "jobName": "IDC01",
   "status": "COMPLETED",
-  "maxRC": 0,
-  "startTime": "2026-09-30T05:02:58.654Z",
-  "endTime": "2026-09-30T05:02:58.680Z"
+  "maxRC": 12,
+  "startTime": "2026-09-30T16:17:18.946Z",
+  "endTime": "2026-09-30T16:17:18.959Z"
 }

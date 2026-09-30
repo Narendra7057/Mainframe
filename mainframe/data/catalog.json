@@ -88,7 +88,7 @@
       "cataloged": true,
       "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\ACCTMSTR.dat",
       "created": "2026-09-30T08:43:07.686Z",
-      "updated": "2026-09-30T08:43:07.714Z"
+      "updated": "2026-09-30T17:06:25.910Z"
     },
     "BANK.PROD.CORETXN": {
       "name": "BANK.PROD.CORETXN",
@@ -107,7 +107,7 @@
       "cataloged": true,
       "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\CORETXN.dat",
       "created": "2026-09-30T08:43:07.754Z",
-      "updated": "2026-09-30T08:43:07.786Z"
+      "updated": "2026-09-30T17:06:25.931Z"
     },
     "BANK.PROD.BANKTXN": {
       "name": "BANK.PROD.BANKTXN",
@@ -126,7 +126,360 @@
       "cataloged": true,
       "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\BANKTXN.dat",
       "created": "2026-09-30T08:43:07.818Z",
-      "updated": "2026-09-30T08:43:07.850Z"
+      "updated": "2026-09-30T17:06:25.947Z"
+    },
+    "BANK.PROD.RECON.RPTSUM.G0001V00": {
+      "name": "BANK.PROD.RECON.RPTSUM.G0001V00",
+      "baseName": "BANK.PROD.RECON.RPTSUM",
+      "type": "GDG_GEN",
+      "recfm": "FB",
+      "lrecl": 132,
+      "blksize": 1320,
+      "space": "(TRK,(2,1),RLSE)",
+      "unit": "SYSDA",
+      "volser": "WORK01",
+      "cataloged": true,
+      "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\RECON\\RPTSUM\\G0001V00.dat",
+      "created": "2026-09-30T16:09:34.902Z",
+      "updated": "2026-09-30T16:09:34.902Z"
+    },
+    "BANK.PROD.RECON.RPTMAT.G0001V00": {
+      "name": "BANK.PROD.RECON.RPTMAT.G0001V00",
+      "baseName": "BANK.PROD.RECON.RPTMAT",
+      "type": "GDG_GEN",
+      "recfm": "FB",
+      "lrecl": 132,
+      "blksize": 1320,
+      "space": "(TRK,(5,2),RLSE)",
+      "unit": "SYSDA",
+      "volser": "WORK01",
+      "cataloged": true,
+      "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\RECON\\RPTMAT\\G0001V00.dat",
+      "created": "2026-09-30T16:09:34.929Z",
+      "updated": "2026-09-30T16:09:34.929Z"
+    },
+    "BANK.PROD.RECON.RPTEXC.G0001V00": {
+      "name": "BANK.PROD.RECON.RPTEXC.G0001V00",
+      "baseName": "BANK.PROD.RECON.RPTEXC",
+      "type": "GDG_GEN",
+      "recfm": "FB",
+      "lrecl": 132,
+      "blksize": 1320,
+      "space": "(TRK,(5,2),RLSE)",
+      "unit": "SYSDA",
+      "volser": "WORK01",
+      "cataloged": true,
+      "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\RECON\\RPTEXC\\G0001V00.dat",
+      "created": "2026-09-30T16:09:34.952Z",
+      "updated": "2026-09-30T16:09:34.952Z"
+    },
+    "BANK.PROD.RECON.RPTREJ.G0001V00": {
+      "name": "BANK.PROD.RECON.RPTREJ.G0001V00",
+      "baseName": "BANK.PROD.RECON.RPTREJ",
+      "type": "GDG_GEN",
+      "recfm": "FB",
+      "lrecl": 132,
+      "blksize": 1320,
+      "space": "(TRK,(2,1),RLSE)",
+      "unit": "SYSDA",
+      "volser": "WORK01",
+      "cataloged": true,
+      "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\RECON\\RPTREJ\\G0001V00.dat",
+      "created": "2026-09-30T16:09:34.982Z",
+      "updated": "2026-09-30T16:09:34.982Z"
+    },
+    "BANK.TEST.ACCTMSTR": {
+      "name": "BANK.TEST.ACCTMSTR",
+      "type": "VSAM_KSDS",
+      "recfm": "FB",
+      "lrecl": 80,
+      "blksize": 800,
+      "keys": {
+        "length": 12,
+        "offset": 0
+      },
+      "recordsize": {
+        "avg": 80,
+        "max": 80
+      },
+      "freespace": [
+        10,
+        10
+      ],
+      "unit": "SYSDA",
+      "volser": "WORK01",
+      "space": {
+        "unit": "TRK",
+        "primary": 5,
+        "secondary": 2
+      },
+      "cataloged": true,
+      "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\TEST\\ACCTMSTR.dat",
+      "created": "2026-09-30T16:19:37.057Z",
+      "updated": "2026-09-30T16:19:37.083Z"
+    },
+    "BANK.TEST.CORETXN": {
+      "name": "BANK.TEST.CORETXN",
+      "baseName": "BANK.TEST.CORETXN",
+      "type": "PS",
+      "recfm": "FB",
+      "lrecl": 80,
+      "blksize": 800,
+      "space": {
+        "unit": "TRK",
+        "primary": 5,
+        "secondary": 2
+      },
+      "unit": "SYSDA",
+      "volser": "WORK01",
+      "cataloged": true,
+      "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\TEST\\CORETXN.dat",
+      "created": "2026-09-30T16:19:37.103Z",
+      "updated": "2026-09-30T16:19:37.124Z"
+    },
+    "BANK.TEST.BANKTXN": {
+      "name": "BANK.TEST.BANKTXN",
+      "baseName": "BANK.TEST.BANKTXN",
+      "type": "PS",
+      "recfm": "FB",
+      "lrecl": 80,
+      "blksize": 800,
+      "space": {
+        "unit": "TRK",
+        "primary": 5,
+        "secondary": 2
+      },
+      "unit": "SYSDA",
+      "volser": "WORK01",
+      "cataloged": true,
+      "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\TEST\\BANKTXN.dat",
+      "created": "2026-09-30T16:19:37.145Z",
+      "updated": "2026-09-30T16:19:37.165Z"
+    },
+    "BANK.PROD.RECON.RPTSUM.G0002V00": {
+      "name": "BANK.PROD.RECON.RPTSUM.G0002V00",
+      "baseName": "BANK.PROD.RECON.RPTSUM",
+      "type": "GDG_GEN",
+      "recfm": "FB",
+      "lrecl": 132,
+      "blksize": 1320,
+      "space": "(TRK,(2,1),RLSE)",
+      "unit": "SYSDA",
+      "volser": "WORK01",
+      "cataloged": true,
+      "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\RECON\\RPTSUM\\G0002V00.dat",
+      "created": "2026-09-30T16:19:37.928Z",
+      "updated": "2026-09-30T16:19:37.928Z"
+    },
+    "BANK.PROD.RECON.RPTMAT.G0002V00": {
+      "name": "BANK.PROD.RECON.RPTMAT.G0002V00",
+      "baseName": "BANK.PROD.RECON.RPTMAT",
+      "type": "GDG_GEN",
+      "recfm": "FB",
+      "lrecl": 132,
+      "blksize": 1320,
+      "space": "(TRK,(5,2),RLSE)",
+      "unit": "SYSDA",
+      "volser": "WORK01",
+      "cataloged": true,
+      "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\RECON\\RPTMAT\\G0002V00.dat",
+      "created": "2026-09-30T16:19:37.950Z",
+      "updated": "2026-09-30T16:19:37.950Z"
+    },
+    "BANK.PROD.RECON.RPTEXC.G0002V00": {
+      "name": "BANK.PROD.RECON.RPTEXC.G0002V00",
+      "baseName": "BANK.PROD.RECON.RPTEXC",
+      "type": "GDG_GEN",
+      "recfm": "FB",
+      "lrecl": 132,
+      "blksize": 1320,
+      "space": "(TRK,(5,2),RLSE)",
+      "unit": "SYSDA",
+      "volser": "WORK01",
+      "cataloged": true,
+      "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\RECON\\RPTEXC\\G0002V00.dat",
+      "created": "2026-09-30T16:19:37.968Z",
+      "updated": "2026-09-30T16:19:37.968Z"
+    },
+    "BANK.PROD.RECON.RPTREJ.G0002V00": {
+      "name": "BANK.PROD.RECON.RPTREJ.G0002V00",
+      "baseName": "BANK.PROD.RECON.RPTREJ",
+      "type": "GDG_GEN",
+      "recfm": "FB",
+      "lrecl": 132,
+      "blksize": 1320,
+      "space": "(TRK,(2,1),RLSE)",
+      "unit": "SYSDA",
+      "volser": "WORK01",
+      "cataloged": true,
+      "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\RECON\\RPTREJ\\G0002V00.dat",
+      "created": "2026-09-30T16:19:37.991Z",
+      "updated": "2026-09-30T16:19:37.991Z"
+    },
+    "BANK.PROD.TXNCORE.SORTED": {
+      "name": "BANK.PROD.TXNCORE.SORTED",
+      "baseName": "BANK.PROD.TXNCORE.SORTED",
+      "type": "PS",
+      "recfm": "FB",
+      "lrecl": 80,
+      "blksize": 800,
+      "space": "(TRK,(5,2),RLSE)",
+      "unit": "SYSDA",
+      "volser": "WORK01",
+      "cataloged": true,
+      "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\TXNCORE\\SORTED.dat",
+      "created": "2026-09-30T17:06:26.301Z",
+      "updated": "2026-09-30T17:06:26.375Z"
+    },
+    "BANK.PROD.TXNBNK.SORTED": {
+      "name": "BANK.PROD.TXNBNK.SORTED",
+      "baseName": "BANK.PROD.TXNBNK.SORTED",
+      "type": "PS",
+      "recfm": "FB",
+      "lrecl": 80,
+      "blksize": 800,
+      "space": "(TRK,(5,2),RLSE)",
+      "unit": "SYSDA",
+      "volser": "WORK01",
+      "cataloged": true,
+      "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\TXNBNK\\SORTED.dat",
+      "created": "2026-09-30T17:06:26.396Z",
+      "updated": "2026-09-30T17:06:26.438Z"
+    },
+    "BANK.PROD.TXNCORE.GOOD": {
+      "name": "BANK.PROD.TXNCORE.GOOD",
+      "baseName": "BANK.PROD.TXNCORE.GOOD",
+      "type": "PS",
+      "recfm": "FB",
+      "lrecl": 80,
+      "blksize": 800,
+      "space": "(TRK,(5,2),RLSE)",
+      "unit": "SYSDA",
+      "volser": "WORK01",
+      "cataloged": true,
+      "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\TXNCORE\\GOOD.dat",
+      "created": "2026-09-30T17:06:26.459Z",
+      "updated": "2026-09-30T17:06:26.542Z"
+    },
+    "BANK.PROD.TXNCORE.REJECT": {
+      "name": "BANK.PROD.TXNCORE.REJECT",
+      "baseName": "BANK.PROD.TXNCORE.REJECT",
+      "type": "PS",
+      "recfm": "FB",
+      "lrecl": 120,
+      "blksize": 1200,
+      "space": "(TRK,(2,1),RLSE)",
+      "unit": "SYSDA",
+      "volser": "WORK01",
+      "cataloged": true,
+      "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\TXNCORE\\REJECT.dat",
+      "created": "2026-09-30T17:06:26.477Z",
+      "updated": "2026-09-30T17:06:26.557Z"
+    },
+    "BANK.PROD.RECON.RESULTS": {
+      "name": "BANK.PROD.RECON.RESULTS",
+      "baseName": "BANK.PROD.RECON.RESULTS",
+      "type": "PS",
+      "recfm": "FB",
+      "lrecl": 120,
+      "blksize": 1200,
+      "space": "(TRK,(10,5),RLSE)",
+      "unit": "SYSDA",
+      "volser": "WORK01",
+      "cataloged": true,
+      "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\RECON\\RESULTS.dat",
+      "created": "2026-09-30T17:06:26.576Z",
+      "updated": "2026-09-30T17:06:26.658Z"
+    },
+    "BANK.PROD.RECON.CTLREC": {
+      "name": "BANK.PROD.RECON.CTLREC",
+      "baseName": "BANK.PROD.RECON.CTLREC",
+      "type": "PS",
+      "recfm": "FB",
+      "lrecl": 80,
+      "blksize": 800,
+      "space": "(TRK,(1,1),RLSE)",
+      "unit": "SYSDA",
+      "volser": "WORK01",
+      "cataloged": true,
+      "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\RECON\\CTLREC.dat",
+      "created": "2026-09-30T17:06:26.595Z",
+      "updated": "2026-09-30T17:06:26.673Z"
+    },
+    "BANK.PROD.DBLOAD.UNLOAD": {
+      "name": "BANK.PROD.DBLOAD.UNLOAD",
+      "baseName": "BANK.PROD.DBLOAD.UNLOAD",
+      "type": "PS",
+      "recfm": "FB",
+      "lrecl": 200,
+      "blksize": 2000,
+      "space": "(TRK,(5,2),RLSE)",
+      "unit": "SYSDA",
+      "volser": "WORK01",
+      "cataloged": true,
+      "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\DBLOAD\\UNLOAD.dat",
+      "created": "2026-09-30T17:06:26.693Z",
+      "updated": "2026-09-30T17:06:26.797Z"
+    },
+    "BANK.PROD.RECON.RPTSUM.G0003V00": {
+      "name": "BANK.PROD.RECON.RPTSUM.G0003V00",
+      "baseName": "BANK.PROD.RECON.RPTSUM",
+      "type": "GDG_GEN",
+      "recfm": "FB",
+      "lrecl": 132,
+      "blksize": 1320,
+      "space": "(TRK,(2,1),RLSE)",
+      "unit": "SYSDA",
+      "volser": "WORK01",
+      "cataloged": true,
+      "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\RECON\\RPTSUM\\G0003V00.dat",
+      "created": "2026-09-30T17:06:26.816Z",
+      "updated": "2026-09-30T17:06:26.816Z"
+    },
+    "BANK.PROD.RECON.RPTMAT.G0003V00": {
+      "name": "BANK.PROD.RECON.RPTMAT.G0003V00",
+      "baseName": "BANK.PROD.RECON.RPTMAT",
+      "type": "GDG_GEN",
+      "recfm": "FB",
+      "lrecl": 132,
+      "blksize": 1320,
+      "space": "(TRK,(5,2),RLSE)",
+      "unit": "SYSDA",
+      "volser": "WORK01",
+      "cataloged": true,
+      "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\RECON\\RPTMAT\\G0003V00.dat",
+      "created": "2026-09-30T17:06:26.835Z",
+      "updated": "2026-09-30T17:06:26.835Z"
+    },
+    "BANK.PROD.RECON.RPTEXC.G0003V00": {
+      "name": "BANK.PROD.RECON.RPTEXC.G0003V00",
+      "baseName": "BANK.PROD.RECON.RPTEXC",
+      "type": "GDG_GEN",
+      "recfm": "FB",
+      "lrecl": 132,
+      "blksize": 1320,
+      "space": "(TRK,(5,2),RLSE)",
+      "unit": "SYSDA",
+      "volser": "WORK01",
+      "cataloged": true,
+      "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\RECON\\RPTEXC\\G0003V00.dat",
+      "created": "2026-09-30T17:06:26.860Z",
+      "updated": "2026-09-30T17:06:26.860Z"
+    },
+    "BANK.PROD.RECON.RPTREJ.G0003V00": {
+      "name": "BANK.PROD.RECON.RPTREJ.G0003V00",
+      "baseName": "BANK.PROD.RECON.RPTREJ",
+      "type": "GDG_GEN",
+      "recfm": "FB",
+      "lrecl": 132,
+      "blksize": 1320,
+      "space": "(TRK,(2,1),RLSE)",
+      "unit": "SYSDA",
+      "volser": "WORK01",
+      "cataloged": true,
+      "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\RECON\\RPTREJ\\G0003V00.dat",
+      "created": "2026-09-30T17:06:26.879Z",
+      "updated": "2026-09-30T17:06:26.879Z"
     }
   },
   "gdgBases": {
@@ -134,43 +487,140 @@
       "name": "BANK.TEST.GDGBASE",
       "limit": 3,
       "scratch": true,
-      "generations": [
-        {
-          "genNumber": 1,
-          "dsname": "BANK.TEST.GDGBASE.G0001V00",
-          "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\TEST\\GDGBASE\\G0001V00.dat",
-          "created": "2026-09-30T05:02:58.698Z"
-        }
-      ],
-      "created": "2026-09-30T05:02:58.679Z"
+      "generations": [],
+      "created": "2026-09-30T16:17:18.957Z"
     },
     "BANK.PROD.RECON.RPTSUM": {
       "name": "BANK.PROD.RECON.RPTSUM",
       "limit": 5,
       "scratch": true,
-      "generations": [],
+      "generations": [
+        {
+          "genNumber": 1,
+          "dsname": "BANK.PROD.RECON.RPTSUM.G0001V00",
+          "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\RECON\\RPTSUM\\G0001V00.dat",
+          "created": "2026-09-30T16:09:34.902Z"
+        },
+        {
+          "genNumber": 2,
+          "dsname": "BANK.PROD.RECON.RPTSUM.G0002V00",
+          "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\RECON\\RPTSUM\\G0002V00.dat",
+          "created": "2026-09-30T16:19:37.928Z"
+        },
+        {
+          "genNumber": 3,
+          "dsname": "BANK.PROD.RECON.RPTSUM.G0003V00",
+          "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\RECON\\RPTSUM\\G0003V00.dat",
+          "created": "2026-09-30T17:06:26.816Z"
+        }
+      ],
       "created": "2026-09-30T08:43:07.878Z"
     },
     "BANK.PROD.RECON.RPTMAT": {
       "name": "BANK.PROD.RECON.RPTMAT",
       "limit": 5,
       "scratch": true,
-      "generations": [],
+      "generations": [
+        {
+          "genNumber": 1,
+          "dsname": "BANK.PROD.RECON.RPTMAT.G0001V00",
+          "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\RECON\\RPTMAT\\G0001V00.dat",
+          "created": "2026-09-30T16:09:34.929Z"
+        },
+        {
+          "genNumber": 2,
+          "dsname": "BANK.PROD.RECON.RPTMAT.G0002V00",
+          "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\RECON\\RPTMAT\\G0002V00.dat",
+          "created": "2026-09-30T16:19:37.950Z"
+        },
+        {
+          "genNumber": 3,
+          "dsname": "BANK.PROD.RECON.RPTMAT.G0003V00",
+          "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\RECON\\RPTMAT\\G0003V00.dat",
+          "created": "2026-09-30T17:06:26.835Z"
+        }
+      ],
       "created": "2026-09-30T08:43:07.915Z"
     },
     "BANK.PROD.RECON.RPTEXC": {
       "name": "BANK.PROD.RECON.RPTEXC",
       "limit": 5,
       "scratch": true,
-      "generations": [],
+      "generations": [
+        {
+          "genNumber": 1,
+          "dsname": "BANK.PROD.RECON.RPTEXC.G0001V00",
+          "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\RECON\\RPTEXC\\G0001V00.dat",
+          "created": "2026-09-30T16:09:34.952Z"
+        },
+        {
+          "genNumber": 2,
+          "dsname": "BANK.PROD.RECON.RPTEXC.G0002V00",
+          "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\RECON\\RPTEXC\\G0002V00.dat",
+          "created": "2026-09-30T16:19:37.968Z"
+        },
+        {
+          "genNumber": 3,
+          "dsname": "BANK.PROD.RECON.RPTEXC.G0003V00",
+          "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\RECON\\RPTEXC\\G0003V00.dat",
+          "created": "2026-09-30T17:06:26.860Z"
+        }
+      ],
       "created": "2026-09-30T08:43:07.949Z"
     },
     "BANK.PROD.RECON.RPTREJ": {
       "name": "BANK.PROD.RECON.RPTREJ",
       "limit": 5,
       "scratch": true,
-      "generations": [],
+      "generations": [
+        {
+          "genNumber": 1,
+          "dsname": "BANK.PROD.RECON.RPTREJ.G0001V00",
+          "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\RECON\\RPTREJ\\G0001V00.dat",
+          "created": "2026-09-30T16:09:34.982Z"
+        },
+        {
+          "genNumber": 2,
+          "dsname": "BANK.PROD.RECON.RPTREJ.G0002V00",
+          "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\RECON\\RPTREJ\\G0002V00.dat",
+          "created": "2026-09-30T16:19:37.991Z"
+        },
+        {
+          "genNumber": 3,
+          "dsname": "BANK.PROD.RECON.RPTREJ.G0003V00",
+          "filePath": "D:\\TY\\Main Frame\\Project\\Mainframe Bank\\mainframe\\data\\BANK\\PROD\\RECON\\RPTREJ\\G0003V00.dat",
+          "created": "2026-09-30T17:06:26.879Z"
+        }
+      ],
       "created": "2026-09-30T08:43:07.978Z"
+    },
+    "BANK.TEST.RECON.RPTSUM": {
+      "name": "BANK.TEST.RECON.RPTSUM",
+      "limit": 5,
+      "scratch": true,
+      "generations": [],
+      "created": "2026-09-30T16:19:37.182Z"
+    },
+    "BANK.TEST.RECON.RPTMAT": {
+      "name": "BANK.TEST.RECON.RPTMAT",
+      "limit": 5,
+      "scratch": true,
+      "generations": [],
+      "created": "2026-09-30T16:19:37.203Z"
+    },
+    "BANK.TEST.RECON.RPTEXC": {
+      "name": "BANK.TEST.RECON.RPTEXC",
+      "limit": 5,
+      "scratch": true,
+      "generations": [],
+      "created": "2026-09-30T16:19:37.222Z"
+    },
+    "BANK.TEST.RECON.RPTREJ": {
+      "name": "BANK.TEST.RECON.RPTREJ",
+      "limit": 5,
+      "scratch": true,
+      "generations": [],
+      "created": "2026-09-30T16:19:37.244Z"
     }
   },
   "version": "1.0",

@@ -191,6 +191,9 @@ class JCLParser {
   substituteSymbolics(text) {
     let result = text;
     for (const [key, val] of this.symbolics.entries()) {
+      // In JCL, &VAR. consumes the trailing dot as a parameter delimiter
+      const regexWithDot = new RegExp(`&${key}\\.`, 'gi');
+      result = result.replace(regexWithDot, val);
       const regex = new RegExp(`&${key}\\b`, 'gi');
       result = result.replace(regex, val);
     }

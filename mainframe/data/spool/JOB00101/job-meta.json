@@ -1,8 +1,8 @@
 {
   "jobId": "JOB00101",
-  "jobName": "BANKRECN",
+  "jobName": "ALLOC01",
   "status": "ABENDED",
   "maxRC": 16,
-  "startTime": "2026-09-30T08:43:07.998Z",
-  "endTime": "2026-09-30T08:43:08.476Z"
+  "startTime": "2026-09-30T16:17:18.805Z",
+  "endTime": "2026-09-30T16:17:18.809Z"
 }
