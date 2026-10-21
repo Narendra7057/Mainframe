@@ -3,6 +3,9 @@
 //* JCL TEMPLATE: INITVSAM                                            *
 //* INITIALIZES ACCOUNT MASTER VSAM KSDS (ACCTMSTR) VIA ACCTINIT      *
 //*===================================================================*
+// SET SEEDDSN=BANK.PROD.ACCTIN
+// SET KSDSDSN=BANK.PROD.ACCTMSTR
+//*
 //STEP001  EXEC PGM=ACCTINIT
 //ACCTIN   DD DSN=&SEEDDSN,DISP=SHR
 //ACCTMSTR DD DSN=&KSDSDSN,DISP=SHR

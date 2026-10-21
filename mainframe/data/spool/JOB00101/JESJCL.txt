@@ -1,9 +1,24 @@
-//ALLOC01 JOB ('RECON'),CLASS=A
-
-//ALLOC01 JOB (ACCT01),'ALLOC TEST',CLASS=A
-//STEP01  EXEC PGM=IEFBR14
-//MYDSN   DD DSN=BANK.TEST.PS01,
-//           DISP=(NEW,CATLG,DELETE),
-//           SPACE=(TRK,(5,2)),
-//           DCB=(RECFM=FB,LRECL=80,BLKSIZE=800)
-  
+//ALLOCDSN JOB ('RECON'),CLASS=A
+//ALLOCDSN JOB (ACCT01),'ALLOCATE DATASET',CLASS=A,MSGCLASS=X
+//*===================================================================*
+//* JCL TEMPLATE: ALLOCDSN                                            *
+//* ALLOCATES A NEW SEQUENTIAL OR PARTITIONED DATASET VIA IEFBR14     *
+//*===================================================================*
+// SET DSNAME=BANK.TEST.SAMPLE.PS
+// SET UNIT=SYSDA
+// SET VOLSER=WORK01
+// SET SPACETYPE=TRK
+// SET PRIMARY=5
+// SET SECONDARY=2
+// SET RECFM=FB
+// SET LRECL=80
+// SET BLKSIZE=800
+//*
+//STEP001  EXEC PGM=IEFBR14
+//NEWDSN   DD DSN=&DSNAME,
+//            DISP=(NEW,CATLG,DELETE),
+//            UNIT=&UNIT,
+//            VOL=SER=&VOLSER,
+//            SPACE=(&SPACETYPE,(&PRIMARY,&SECONDARY),RLSE),
+//            DCB=(RECFM=&RECFM,LRECL=&LRECL,BLKSIZE=&BLKSIZE)
+//

@@ -117,6 +117,24 @@ class SpoolManager {
       SYSOUT: readSafe('SYSOUT.txt')
     };
   }
+
+  static listJobs(spoolRoot = path.join(__dirname, '..', 'data', 'spool')) {
+    if (!fs.existsSync(spoolRoot)) return [];
+    const dirs = fs.readdirSync(spoolRoot);
+    const jobs = [];
+    for (const dir of dirs) {
+      const metaPath = path.join(spoolRoot, dir, 'job-meta.json');
+      if (fs.existsSync(metaPath)) {
+        try {
+          const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+          jobs.push(meta);
+        } catch (e) {
+          jobs.push({ jobId: dir, jobName: 'UNKNOWN', status: 'UNKNOWN', maxRC: 0 });
+        }
+      }
+    }
+    return jobs.sort((a, b) => (b.startTime || '').localeCompare(a.startTime || ''));
+  }
 }
 
 module.exports = { SpoolManager };

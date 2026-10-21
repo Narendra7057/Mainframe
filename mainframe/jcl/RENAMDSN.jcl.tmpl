@@ -3,6 +3,9 @@
 //* JCL TEMPLATE: RENAMDSN                                            *
 //* RENAMES A DATASET ENTRY IN CATALOG VIA IDCAMS ALTER               *
 //*===================================================================*
+// SET OLDDSN=BANK.TEST.SAMPLE.PS
+// SET NEWDSN=BANK.TEST.RENAMED.PS
+//*
 //STEP001  EXEC PGM=IDCAMS
 //SYSPRINT DD SYSOUT=*
 //SYSIN    DD *

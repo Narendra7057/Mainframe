@@ -33,6 +33,19 @@ async function runTests() {
   const runner = new JCLRunner();
   const catalog = runner.catalog;
 
+  // Clean up any existing test datasets from previous test runs
+  const cat = catalog.loadCatalog();
+  for (const ds of Object.keys(cat.datasets)) {
+    if (ds.startsWith('BANK.TEST.') || ds.startsWith('BANK.PROD.ACCT') || ds.startsWith('BANK.PROD.CORETXN') || ds.startsWith('BANK.PROD.BANKTXN')) {
+      try { catalog.deleteDataset(ds, true); } catch (e) {}
+    }
+  }
+  for (const gdg of Object.keys(cat.gdgBases)) {
+    if (gdg.startsWith('BANK.TEST.')) {
+      try { catalog.deleteDataset(gdg, true); } catch (e) {}
+    }
+  }
+
   // -------------------------------------------------------------
   // TEST GROUP 1: Catalog & Dataset Operations
   // -------------------------------------------------------------

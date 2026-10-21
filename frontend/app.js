@@ -3,8 +3,14 @@
  * Handles: Tab navigation, WebSocket, API calls, charts, job management
  */
 
-const API = 'http://localhost:3000/api';
-const WS_URL = 'ws://localhost:3000/ws';
+const API = (window.location.protocol === 'http:' || window.location.protocol === 'https:')
+  ? `${window.location.origin}/api`
+  : 'http://localhost:3000/api';
+const WS_PROTOCOL = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+const WS_HOST = window.location.host || 'localhost:3000';
+const WS_URL = (window.location.protocol === 'http:' || window.location.protocol === 'https:')
+  ? `${WS_PROTOCOL}//${WS_HOST}/ws`
+  : 'ws://localhost:3000/ws';
 
 // ═══════════════════════════════════════════════════════════════════
 // State
@@ -78,6 +84,7 @@ function switchTab(tab) {
   if (tab === 'audit')   loadAuditLog();
   if (tab === 'catalog') loadCatalog();
   if (tab === 'dashboard') loadDashboardStats();
+  if (tab === 'spool')   loadSpoolJobs();
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -120,11 +127,13 @@ function setWsStatus(cls, text) {
 function handleWsMessage(msg) {
   switch (msg.type) {
     case 'JOB_QUEUED':
+      currentTrackingId = msg.trackingId;
       feedLog(`Job queued: ${msg.trackingId} ${msg.jobName || ''}`, 'info');
       showJobProgress(true);
       break;
     case 'STEP_UPDATE':
-      if (msg.trackingId === currentTrackingId) {
+      if (!currentTrackingId || msg.trackingId === currentTrackingId) {
+        currentTrackingId = msg.trackingId;
         updateStepCard(msg.stepName, msg.status, msg.rc);
         feedLog(`Step ${msg.stepName}: ${msg.status} (RC=${msg.rc !== null ? msg.rc : '-'})`, msg.status === 'ABENDED' ? 'error' : 'success');
       }
@@ -222,7 +231,26 @@ function initButtons() {
   };
 
   // Spool
-  document.getElementById('load-spool-btn').onclick = loadSpool;
+  document.getElementById('load-spool-btn').onclick = () => loadSpool();
+  const spoolSel = document.getElementById('spool-select');
+  if (spoolSel) {
+    spoolSel.addEventListener('change', () => {
+      if (spoolSel.value) {
+        document.getElementById('spool-jobid').value = spoolSel.value;
+        loadSpool(spoolSel.value);
+      }
+    });
+  }
+
+  // Run with Parameters button
+  const runParamsBtn = document.getElementById('run-params-btn');
+  if (runParamsBtn) {
+    runParamsBtn.onclick = async () => {
+      const busdate = document.getElementById('busdate-input').value.trim() || new Date().toISOString().slice(0, 10).replace(/-/g, '');
+      const env = document.getElementById('env-select').value || 'PROD';
+      await runBankrecn(busdate, env);
+    };
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -609,7 +637,7 @@ async function loadAuditLog() {
       const sc = (log.status || '').toUpperCase();
       return `<tr>
         <td>${i + 1}</td>
-        <td style="font-family:var(--font-mono)">${log.job_id || ''}</td>
+        <td style="font-family:var(--font-mono)"><button class="btn-link" onclick="viewSpool('${log.job_id}')" style="cursor:pointer;text-decoration:underline;color:var(--accent-hover);font-family:inherit;font-size:inherit;" title="View JES Spool">${log.job_id || ''}</button></td>
         <td style="font-weight:600">${log.job_name || ''}</td>
         <td><span class="status-badge ${sc}">${log.status}</span></td>
         <td style="text-align:center">${log.max_rc ?? ''}</td>
@@ -653,13 +681,14 @@ async function loadCatalog() {
     // GDG Bases
     const gdgTbody = document.getElementById('gdg-tbody');
     if (!data.gdgBases || !data.gdgBases.length) {
-      gdgTbody.innerHTML = '<tr><td colspan="4" class="empty-row">No GDG bases.</td></tr>';
+      gdgTbody.innerHTML = '<tr><td colspan="5" class="empty-row">No GDG bases.</td></tr>';
     } else {
       gdgTbody.innerHTML = data.gdgBases.map(g => `<tr>
         <td style="font-family:var(--font-mono)">${g.name}</td>
         <td>${g.limit ?? ''}</td>
         <td>${(g.generations || []).length}</td>
         <td>${g.scratch ? '✓' : '✗'}</td>
+        <td><button class="btn-link" onclick="readDataset('${g.name}(0)')">Read (0)</button></td>
       </tr>`).join('');
     }
   } catch (e) {
@@ -695,9 +724,10 @@ async function readDataset(dsname) {
 // ═══════════════════════════════════════════════════════════════════
 // JES Spool
 // ═══════════════════════════════════════════════════════════════════
-async function loadSpool() {
-  const jobId = document.getElementById('spool-jobid').value.trim();
+async function loadSpool(targetId) {
+  const jobId = (targetId || document.getElementById('spool-jobid').value || '').trim();
   if (!jobId) { toast('warn', 'Enter a Job ID'); return; }
+  document.getElementById('spool-jobid').value = jobId;
 
   const out = document.getElementById('spool-output');
   out.textContent = 'Loading spool…';
@@ -712,6 +742,28 @@ async function loadSpool() {
   } catch (e) {
     out.textContent = `Error: ${e.message}`;
   }
+}
+
+async function viewSpool(jobId) {
+  switchTab('spool');
+  document.getElementById('spool-jobid').value = jobId;
+  await loadSpool(jobId);
+}
+
+async function loadSpoolJobs() {
+  const sel = document.getElementById('spool-select');
+  if (!sel) return;
+  try {
+    const resp = await fetch(`${API}/spool`);
+    const data = await resp.json();
+    sel.innerHTML = '<option value="">— Select Job to View Spool —</option>';
+    (data.jobs || []).forEach(j => {
+      const opt = document.createElement('option');
+      opt.value = j.jobId;
+      opt.textContent = `${j.jobId} — ${j.jobName || 'JOB'} (RC=${j.maxRC ?? '-'}, ${j.status || ''})`;
+      sel.appendChild(opt);
+    });
+  } catch (e) {}
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -751,3 +803,5 @@ function toast(type, message) {
 // Expose for inline onclick handlers
 // ═══════════════════════════════════════════════════════════════════
 window.readDataset = readDataset;
+window.viewSpool = viewSpool;
+window.loadSpool = loadSpool;

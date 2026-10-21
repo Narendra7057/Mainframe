@@ -1,0 +1,22 @@
+{
+  "name": "mainframe-bank-reconciliation",
+  "version": "1.0.0",
+  "description": "Mainframe Bank Transaction Reconciliation System",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "node backend/server.js",
+    "test": "node mainframe/test_suite.js",
+    "test:mainframe": "node mainframe/test_suite.js"
+  },
+  "keywords": [
+    "mainframe",
+    "z-os",
+    "jcl",
+    "cobol",
+    "reconciliation",
+    "banking"
+  ],
+  "author": "Narendra7057",
+  "license": "ISC"
+}

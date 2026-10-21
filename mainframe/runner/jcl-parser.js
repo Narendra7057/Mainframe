@@ -61,7 +61,10 @@ class JCLParser {
       if (setMatch) {
         const varName = setMatch[1].toUpperCase();
         const varVal = this.stripQuotes(setMatch[2].trim());
-        this.symbolics.set(varName, varVal);
+        // Only set default if not already passed in externalParams
+        if (!externalParams || !Object.prototype.hasOwnProperty.call(externalParams, varName)) {
+          this.symbolics.set(varName, varVal);
+        }
         continue;
       }
 

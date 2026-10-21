@@ -3,9 +3,14 @@
 //* JCL TEMPLATE: COPYDSN                                             *
 //* COPIES A SEQUENTIAL OR VSAM DATASET VIA IEBGENER OR IDCAMS REPRO  *
 //*===================================================================*
+// SET FROMDSN=BANK.PROD.CORETXN
+// SET TODSN=BANK.TEST.CORETXN.COPY
+//*
 //STEP001  EXEC PGM=IEBGENER
 //SYSUT1   DD DSN=&FROMDSN,DISP=SHR
-//SYSUT2   DD DSN=&TODSN,DISP=SHR
+//SYSUT2   DD DSN=&TODSN,
+//            DISP=(NEW,CATLG,DELETE),
+//            DCB=(RECFM=FB,LRECL=80,BLKSIZE=800)
 //SYSPRINT DD SYSOUT=*
 //SYSIN    DD DUMMY
 //

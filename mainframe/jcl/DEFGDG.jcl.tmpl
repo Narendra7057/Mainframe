@@ -3,6 +3,10 @@
 //* JCL TEMPLATE: DEFGDG                                              *
 //* DEFINES A GENERATION DATA GROUP (GDG) BASE VIA IDCAMS             *
 //*===================================================================*
+// SET DSNAME=BANK.TEST.SAMPLE.GDG
+// SET LIMIT=5
+// SET OPTION=SCRATCH
+//*
 //STEP001  EXEC PGM=IDCAMS
 //SYSPRINT DD SYSOUT=*
 //SYSIN    DD *

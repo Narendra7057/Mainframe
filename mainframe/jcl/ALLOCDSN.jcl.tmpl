@@ -3,6 +3,16 @@
 //* JCL TEMPLATE: ALLOCDSN                                            *
 //* ALLOCATES A NEW SEQUENTIAL OR PARTITIONED DATASET VIA IEFBR14     *
 //*===================================================================*
+// SET DSNAME=BANK.TEST.SAMPLE.PS
+// SET UNIT=SYSDA
+// SET VOLSER=WORK01
+// SET SPACETYPE=TRK
+// SET PRIMARY=5
+// SET SECONDARY=2
+// SET RECFM=FB
+// SET LRECL=80
+// SET BLKSIZE=800
+//*
 //STEP001  EXEC PGM=IEFBR14
 //NEWDSN   DD DSN=&DSNAME,
 //            DISP=(NEW,CATLG,DELETE),

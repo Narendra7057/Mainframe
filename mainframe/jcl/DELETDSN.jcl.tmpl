@@ -3,7 +3,9 @@
 //* JCL TEMPLATE: DELETDSN                                            *
 //* DELETES A DATASET VIA IEFBR14 OR IDCAMS DELETE PURGE              *
 //*===================================================================*
+// SET DSNAME=BANK.TEST.SAMPLE.PS
+//*
 //STEP001  EXEC PGM=IEFBR14
 //OLDDSN   DD DSN=&DSNAME,
-//            DISP=(OLD,DELETE)
+//            DISP=(MOD,DELETE)
 //

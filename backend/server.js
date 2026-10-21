@@ -350,7 +350,18 @@ app.post('/api/jobs/run-bankrecn', async (req, res) => {
   }
 });
 
-// ── Spool output for a job ────────────────────────────────────────────────────
+// ── Spool list & output for jobs ─────────────────────────────────────────────
+app.get('/api/spool', (req, res) => {
+  try {
+    const { SpoolManager } = require(path.join(MAINFRAME_DIR, 'runner', 'spool'));
+    const spoolRoot = path.join(MAINFRAME_DIR, 'data', 'spool');
+    const jobs = SpoolManager.listJobs(spoolRoot);
+    res.json({ count: jobs.length, jobs });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 app.get('/api/spool/:jobId', (req, res) => {
   const { SpoolManager } = require(path.join(MAINFRAME_DIR, 'runner', 'spool'));
   const spoolRoot = path.join(MAINFRAME_DIR, 'data', 'spool');

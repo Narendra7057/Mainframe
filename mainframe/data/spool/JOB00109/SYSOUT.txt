@@ -1,0 +1,8 @@
+==================================================
+TXNVALID: TRANSACTION VALIDATION STARTED
+TXNVALID: VALIDATION SUMMARY
+  TOTAL READ     : 000000
+  VALID (GOOD)   : 000000
+  REJECTED       : 000000
+==================================================
+TXNVALID: EMPTY INPUT FILE DETECTED (RC=12)

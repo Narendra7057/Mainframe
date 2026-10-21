@@ -236,7 +236,13 @@
 
         <!-- BANKRECN params -->
         <div class="params-section" id="bankrecn-params">
-          <h2 class="section-title">BANKRECN Parameters</h2>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+            <h2 class="section-title" style="margin-bottom:0">BANKRECN Parameters</h2>
+            <button class="btn-primary" id="run-params-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Run with Parameters
+            </button>
+          </div>
           <div class="params-row">
             <div class="param-field">
               <label>Business Date (YYYYMMDD)</label>
@@ -420,6 +426,9 @@
       <div class="results-toolbar">
         <h2 class="section-title">JES Spool Viewer</h2>
         <div class="filters-row">
+          <select id="spool-select" class="select-input">
+            <option value="">— Select Job to View Spool —</option>
+          </select>
           <input type="text" id="spool-jobid" class="input-field" placeholder="Job ID (e.g. JOB00101)…" />
           <button class="btn-primary" id="load-spool-btn">Load Spool</button>
         </div>

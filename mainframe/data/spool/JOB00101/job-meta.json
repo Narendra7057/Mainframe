@@ -1,8 +1,8 @@
 {
   "jobId": "JOB00101",
-  "jobName": "ALLOC01",
-  "status": "ABENDED",
-  "maxRC": 16,
-  "startTime": "2026-09-30T16:17:18.805Z",
-  "endTime": "2026-09-30T16:17:18.809Z"
+  "jobName": "ALLOCDSN",
+  "status": "COMPLETED",
+  "maxRC": 0,
+  "startTime": "2026-10-21T13:29:05.463Z",
+  "endTime": "2026-10-21T13:29:05.497Z"
 }

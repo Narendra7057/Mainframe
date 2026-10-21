@@ -147,6 +147,22 @@ class CatalogManager {
   defineGDG(baseName, limit = 5, scratch = true) {
     const cat = this.loadCatalog();
     const name = baseName.toUpperCase();
+    if (cat.gdgBases[name] && cat.gdgBases[name].generations) {
+      for (const gen of cat.gdgBases[name].generations) {
+        if (scratch && fs.existsSync(gen.filePath)) {
+          try { fs.unlinkSync(gen.filePath); } catch (e) {}
+        }
+        delete cat.datasets[gen.dsname];
+      }
+    }
+    for (const dsn of Object.keys(cat.datasets)) {
+      if (dsn.startsWith(`${name}.G`)) {
+        if (scratch && cat.datasets[dsn].filePath && fs.existsSync(cat.datasets[dsn].filePath)) {
+          try { fs.unlinkSync(cat.datasets[dsn].filePath); } catch (e) {}
+        }
+        delete cat.datasets[dsn];
+      }
+    }
     cat.gdgBases[name] = {
       name,
       limit: parseInt(limit, 10) || 5,
@@ -314,8 +330,18 @@ class CatalogManager {
       const gdg = cat.gdgBases[resolvedName];
       if (purge && gdg.generations) {
         for (const gen of gdg.generations) {
-          if (fs.existsSync(gen.filePath)) fs.unlinkSync(gen.filePath);
+          if (fs.existsSync(gen.filePath)) {
+            try { fs.unlinkSync(gen.filePath); } catch (e) {}
+          }
           delete cat.datasets[gen.dsname];
+        }
+      }
+      for (const dsn of Object.keys(cat.datasets)) {
+        if (dsn.startsWith(`${resolvedName}.G`)) {
+          if (purge && cat.datasets[dsn].filePath && fs.existsSync(cat.datasets[dsn].filePath)) {
+            try { fs.unlinkSync(cat.datasets[dsn].filePath); } catch (e) {}
+          }
+          delete cat.datasets[dsn];
         }
       }
       delete cat.gdgBases[resolvedName];

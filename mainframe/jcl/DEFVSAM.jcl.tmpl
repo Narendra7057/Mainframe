@@ -3,6 +3,14 @@
 //* JCL TEMPLATE: DEFVSAM                                             *
 //* DEFINES A VSAM KEY-SEQUENCED DATASET (KSDS) CLUSTER VIA IDCAMS   *
 //*===================================================================*
+// SET DSNAME=BANK.TEST.NEWVSAM
+// SET KEYLEN=12
+// SET KEYOFFSET=0
+// SET AVGREC=80
+// SET MAXREC=80
+// SET VOLSER=WORK01
+// SET PRIMARY=5
+//*
 //STEP001  EXEC PGM=IDCAMS
 //SYSPRINT DD SYSOUT=*
 //SYSIN    DD *

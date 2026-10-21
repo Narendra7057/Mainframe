@@ -1,0 +1,6 @@
+==================================================
+ACCTINIT: STARTING ACCOUNT MASTER KSDS INITIALIZATION
+ACCTINIT: LOAD COMPLETE.
+  RECORDS READ    : 000006
+  RECORDS LOADED  : 000006
+==================================================

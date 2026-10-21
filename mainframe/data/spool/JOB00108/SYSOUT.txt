@@ -1,0 +1,8 @@
+==================================================
+TXNVALID: TRANSACTION VALIDATION STARTED
+TXNVALID: VALIDATION SUMMARY
+  TOTAL READ     : 000015
+  VALID (GOOD)   : 000009
+  REJECTED       : 000006
+==================================================
+TXNVALID: REJECTS DETECTED (RC=04)

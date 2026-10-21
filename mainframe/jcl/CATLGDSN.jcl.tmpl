@@ -3,6 +3,9 @@
 //* JCL TEMPLATE: CATLGDSN                                            *
 //* CATALOGS OR UNCATALOGS A DATASET VIA IEHPROGM                     *
 //*===================================================================*
+// SET ACTION=CATLG
+// SET DSNAME=BANK.TEST.SAMPLE.PS
+//*
 //STEP001  EXEC PGM=IEHPROGM
 //SYSPRINT DD SYSOUT=*
 //SYSIN    DD *

@@ -437,10 +437,10 @@ class CobolRunner {
 
   runRecRpt(step, context) {
     const { spool, catalog } = context;
-    const recData = catalog.readDataset(step.dd.RECONIN.dsn, 0);
+    const recData = catalog.readDataset(step.dd.RECONIN._resolvedDsn || step.dd.RECONIN.dsn, 0);
     let ctlData = { records: [] };
     try {
-      ctlData = catalog.readDataset(step.dd.CTLIN.dsn, 0);
+      ctlData = catalog.readDataset(step.dd.CTLIN._resolvedDsn || step.dd.CTLIN.dsn, 0);
     } catch (e) {}
 
     const sumLines = [
@@ -460,7 +460,7 @@ class CobolRunner {
     sumLines.push('------------------------------------------------------------------------------------------------------------------------------------');
     sumLines.push('END OF RECONCILIATION SUMMARY REPORT');
 
-    catalog.writeDataset(step.dd.RPTSUM.dsn, sumLines, false);
+    catalog.writeDataset(step.dd.RPTSUM._resolvedDsn || step.dd.RPTSUM.dsn, sumLines, false);
 
     const matLines = [
       '',
@@ -505,17 +505,17 @@ class CobolRunner {
     matLines.push('------------------------------------------------------------------------------------------------------------------------------------');
     matLines.push(`TOTAL MATCHED TRANSACTIONS: ${matCnt}`);
     matLines.push('END OF MATCHED TRANSACTIONS REPORT');
-    catalog.writeDataset(step.dd.RPTMAT.dsn, matLines, false);
+    catalog.writeDataset(step.dd.RPTMAT._resolvedDsn || step.dd.RPTMAT.dsn, matLines, false);
 
     excLines.push('------------------------------------------------------------------------------------------------------------------------------------');
     excLines.push(`TOTAL EXCEPTION TRANSACTIONS: ${excCnt}`);
     excLines.push('END OF EXCEPTION TRANSACTIONS REPORT');
-    catalog.writeDataset(step.dd.RPTEXC.dsn, excLines, false);
+    catalog.writeDataset(step.dd.RPTEXC._resolvedDsn || step.dd.RPTEXC.dsn, excLines, false);
 
     // Rejects report if REJIN exists
     if (step.dd.REJIN && step.dd.RPTREJ) {
       try {
-        const rejData = catalog.readDataset(step.dd.REJIN.dsn, 0);
+        const rejData = catalog.readDataset(step.dd.REJIN._resolvedDsn || step.dd.REJIN.dsn, 0);
         const rejLines = [
           '',
           'MAINFRAME BANK - TRANSACTION REJECT / VALIDATION REPORT                    PAGE: 0001',
@@ -532,7 +532,7 @@ class CobolRunner {
         rejLines.push('------------------------------------------------------------------------------------------------------------------------------------');
         rejLines.push(`TOTAL REJECTED TRANSACTIONS: ${rejData.records.length}`);
         rejLines.push('END OF REJECT REPORT');
-        catalog.writeDataset(step.dd.RPTREJ.dsn, rejLines, false);
+        catalog.writeDataset(step.dd.RPTREJ._resolvedDsn || step.dd.RPTREJ.dsn, rejLines, false);
       } catch (e) {}
     }
 

@@ -120,13 +120,15 @@ class JCLRunner {
           stepResult = await IEBCOPYUtility.execute(step, context);
         } else if (pgm === 'IEHPROGM') {
           stepResult = await IEHPROGMUtility.execute(step, context);
+        } else if (pgm === 'CTLCHECK') {
+          stepResult = this.verifyControlTotals(step, context);
         } else {
           // COBOL Program (ACCTINIT, TXNVALID, RECONCIL, RECLOAD, RECRPT, etc.)
           stepResult = await this.cobolRunner.execute(step, context);
         }
 
         // Special handling for Step 80 (Control-total check)
-        if (step.stepName === 'STEP080' || pgm === 'CTLCHECK') {
+        if (step.stepName === 'STEP080' && pgm !== 'CTLCHECK') {
           const ctlCheckResult = this.verifyControlTotals(step, context);
           if (ctlCheckResult.returnCode > stepResult.returnCode) {
             stepResult = ctlCheckResult;
@@ -247,6 +249,7 @@ class JCLRunner {
       spool.sysmsg(`IEF236I ALLOC. FOR ${context.jobName} ${step.stepName} ${ddName}`);
 
       const resolved = catalog.resolveDatasetName(dd.dsn, initialDisp === 'NEW');
+      dd._resolvedDsn = resolved.resolvedName;
       const cat = catalog.loadCatalog();
       const exists = !!cat.datasets[resolved.resolvedName];
 
@@ -294,19 +297,19 @@ class JCLRunner {
         ? (dd.disp[1] || 'KEEP').toUpperCase()
         : (dd.disp[2] || dd.disp[1] || 'KEEP').toUpperCase();
 
-      const resolved = catalog.resolveDatasetName(dd.dsn);
+      const resolvedName = dd._resolvedDsn || catalog.resolveDatasetName(dd.dsn).resolvedName;
 
       if (targetDisp === 'DELETE') {
         try {
-          catalog.deleteDataset(resolved.resolvedName);
-          spool.sysmsg(`IEF285I ${resolved.resolvedName} DELETED`);
+          catalog.deleteDataset(resolvedName);
+          spool.sysmsg(`IEF285I ${resolvedName} DELETED`);
         } catch (e) {}
       } else if (targetDisp === 'CATLG') {
-        catalog.setCatalogStatus(resolved.resolvedName, true);
-        spool.sysmsg(`IEF285I ${resolved.resolvedName} CATALOGED`);
+        catalog.setCatalogStatus(resolvedName, true);
+        spool.sysmsg(`IEF285I ${resolvedName} CATALOGED`);
       } else if (targetDisp === 'UNCATLG') {
-        catalog.setCatalogStatus(resolved.resolvedName, false);
-        spool.sysmsg(`IEF285I ${resolved.resolvedName} UNCATALOGED`);
+        catalog.setCatalogStatus(resolvedName, false);
+        spool.sysmsg(`IEF285I ${resolvedName} UNCATALOGED`);
       }
     }
   }

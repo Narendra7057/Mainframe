@@ -1,4 +1,33 @@
-
+==================================================
+TXNVALID: TRANSACTION VALIDATION STARTED
+TXNVALID: VALIDATION SUMMARY
+  TOTAL READ     : 000015
+  VALID (GOOD)   : 000009
+  REJECTED       : 000006
+==================================================
+TXNVALID: REJECTS DETECTED (RC=04)
+==================================================
+RECONCIL: COMPLETED RECONCILIATION SUMMARY
+  TOTAL CORE TXNS  : 00000009
+  TOTAL BANK TXNS  : 00000008
+  MATCHED TXNS     : 00000004
+  AMOUNT MISMATCH  : 00000001
+  MISSING IN BANK  : 00000003
+  MISSING IN CORE  : 00000002
+  DUPLICATE TXNS   : 00000002
+  TOTAL EXCEPTIONS : 00000008
+==================================================
+==================================================
+RECLOAD: PREPARING DATABASE INGESTION STREAM
+RECLOAD: DATABASE INGEST DATASET GENERATED
+  ROWS PREPARED   : 000012
+==================================================
+==================================================
+RECRPT: REPORT GENERATION COMPLETED
+  MATCHED ROWS    : 000004
+  EXCEPTION ROWS  : 000008
+==================================================
+*** SYSOUT DATASET: BANK.PROD.RECON.RPTSUM(0) ***
 MAINFRAME BANK - NIGHTLY RECONCILIATION SUMMARY REPORT                    PAGE: 0001
 ====================================================================================================================================
 METRIC / CATEGORY              TOTAL COUNT       TOTAL AMOUNT ($)      NOTES
