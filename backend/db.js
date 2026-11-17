@@ -118,17 +118,30 @@ class ResultsDatabase {
       let sql = 'SELECT * FROM RECON_RESULT WHERE 1=1';
       const params = [];
 
-      if (filters.status) {
-        sql += ' AND status LIKE ?';
-        params.push(`%${filters.status}%`);
+      const status = (filters.status || '').trim();
+      const accountQuery = (filters.account_no || '').trim();
+      const rawDate = (filters.date || '').trim();
+
+      if (status) {
+        sql += ' AND UPPER(TRIM(status)) = UPPER(?)';
+        params.push(status);
       }
-      if (filters.account_no) {
-        sql += ' AND account_no LIKE ?';
-        params.push(`%${filters.account_no}%`);
+      if (accountQuery) {
+        const pattern = `%${accountQuery}%`;
+        sql += ' AND (LOWER(TRIM(account_no)) LIKE LOWER(?) OR LOWER(TRIM(txn_ref)) LIKE LOWER(?) OR LOWER(TRIM(account_name)) LIKE LOWER(?) OR LOWER(TRIM(channel)) LIKE LOWER(?) OR LOWER(TRIM(reason_code)) LIKE LOWER(?))';
+        params.push(pattern, pattern, pattern, pattern, pattern);
       }
-      if (filters.date) {
-        sql += ' AND txn_date = ?';
-        params.push(filters.date);
+      if (rawDate) {
+        const digits = rawDate.replace(/\D/g, '');
+        if (digits.length === 8) {
+          const compactDate = digits;
+          const isoDate = `${digits.slice(0, 4)}-${digits.slice(4, 6)}-${digits.slice(6, 8)}`;
+          sql += " AND (REPLACE(TRIM(txn_date), '-', '') = ? OR date(created_at, 'localtime') = ? OR substr(created_at, 1, 10) = ?)";
+          params.push(compactDate, isoDate, isoDate);
+        } else {
+          sql += " AND (REPLACE(TRIM(txn_date), '-', '') LIKE ? OR created_at LIKE ?)";
+          params.push(`%${rawDate}%`, `%${rawDate}%`);
+        }
       }
       sql += ' ORDER BY id DESC LIMIT 500';
 

@@ -211,14 +211,34 @@ function initButtons() {
   };
 
   // Results filters
-  document.getElementById('apply-filters-btn').onclick = loadResults;
+  let accountFilterTimer = null;
+  const filterStatusEl = document.getElementById('filter-status');
+  const filterAccountEl = document.getElementById('filter-account');
+  const filterDateEl = document.getElementById('filter-date');
+
+  document.getElementById('apply-filters-btn').onclick = () => loadResults();
+  filterStatusEl.addEventListener('change', () => loadResults());
+  filterDateEl.addEventListener('change', () => loadResults());
+  filterDateEl.addEventListener('input', () => loadResults());
+  filterAccountEl.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (accountFilterTimer) clearTimeout(accountFilterTimer);
+      loadResults();
+    }
+  });
+  filterAccountEl.addEventListener('input', () => {
+    if (accountFilterTimer) clearTimeout(accountFilterTimer);
+    accountFilterTimer = setTimeout(() => loadResults(), 200);
+  });
   document.getElementById('clear-filters-btn').onclick = () => {
-    document.getElementById('filter-status').value = '';
-    document.getElementById('filter-account').value = '';
-    document.getElementById('filter-date').value = '';
+    if (accountFilterTimer) clearTimeout(accountFilterTimer);
+    filterStatusEl.value = '';
+    filterAccountEl.value = '';
+    filterDateEl.value = '';
     loadResults();
   };
-  document.getElementById('refresh-results-btn').onclick = loadResults;
+  document.getElementById('refresh-results-btn').onclick = () => loadResults();
 
   // Audit refresh
   document.getElementById('refresh-audit-btn').onclick = loadAuditLog;
@@ -575,41 +595,65 @@ function renderStepTimeline(steps) {
 // ═══════════════════════════════════════════════════════════════════
 // Results
 // ═══════════════════════════════════════════════════════════════════
+let resultsRequestSeq = 0;
+
 async function loadResults() {
-  const status  = document.getElementById('filter-status').value;
-  const account = document.getElementById('filter-account').value;
-  const date    = document.getElementById('filter-date').value;
+  const reqSeq  = ++resultsRequestSeq;
+  const status  = document.getElementById('filter-status').value.trim();
+  const account = document.getElementById('filter-account').value.trim();
+  const date    = document.getElementById('filter-date').value.trim();
+  const hasFilters = Boolean(status || account || date);
 
   const params = new URLSearchParams();
   if (status)  params.set('status', status);
   if (account) params.set('account_no', account);
   if (date)    params.set('date', date.replace(/-/g, ''));
 
+  const query = params.toString();
+  const url = query ? `${API}/results?${query}` : `${API}/results`;
+
   try {
-    const resp = await fetch(`${API}/results?${params}`);
+    const resp = await fetch(url, { cache: 'no-store' });
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     const data = await resp.json();
-    renderResultsTable(data.results || []);
-    document.getElementById('results-footer').textContent = `Showing ${data.count ?? 0} record(s)`;
+    if (reqSeq !== resultsRequestSeq) return; // Ignore stale out-of-order response
+    renderResultsTable(data.results || [], hasFilters);
+    const active = [];
+    if (status) active.push(`Status=${status}`);
+    if (account) active.push(`Search="${account}"`);
+    if (date) active.push(`Date=${date}`);
+    const suffix = active.length ? ` (Filtered: ${active.join(', ')})` : '';
+    document.getElementById('results-footer').textContent = `Showing ${data.count ?? 0} record(s)${suffix}`;
   } catch (e) {
-    renderResultsTable([]);
+    if (reqSeq !== resultsRequestSeq) return;
+    renderResultsTable([], hasFilters);
     document.getElementById('results-footer').textContent = 'Failed to load results: ' + e.message;
   }
 }
 
-function renderResultsTable(rows) {
+function formatTxnDate(raw) {
+  const s = String(raw || '').trim();
+  return /^\d{8}$/.test(s) ? `${s.slice(0, 4)}-${s.slice(4, 6)}-${s.slice(6, 8)}` : s;
+}
+
+function renderResultsTable(rows, hasFilters = false) {
   const tbody = document.getElementById('results-tbody');
   if (!rows.length) {
-    tbody.innerHTML = '<tr><td colspan="11" class="empty-row">No results found. Run a BANKRECN job first.</td></tr>';
+    const msg = hasFilters
+      ? 'No matching records found for the current filters.'
+      : 'No results found. Run a BANKRECN job first.';
+    tbody.innerHTML = `<tr><td colspan="11" class="empty-row">${msg}</td></tr>`;
     return;
   }
   tbody.innerHTML = rows.map(r => {
     const statusClass = (r.status || '').replace(/\s+/g, '-').toUpperCase();
     const diff = (r.diff_sign === '-' ? '-' : '+') + '$' + (r.diff_amount || 0).toFixed(2);
+    const dateTitle = r.created_at ? `TXN Date: ${formatTxnDate(r.txn_date)} | Run: ${r.created_at}` : '';
     return `<tr>
       <td><span class="status-badge ${statusClass}">${r.status}</span></td>
       <td>${r.account_no || ''}</td>
       <td>${r.txn_ref || ''}</td>
-      <td>${r.txn_date || ''}</td>
+      <td title="${dateTitle}">${formatTxnDate(r.txn_date)}</td>
       <td>$${(r.core_amount || 0).toFixed(2)}</td>
       <td>$${(r.bank_amount || 0).toFixed(2)}</td>
       <td style="color:${r.diff_sign === '-' ? '#ef4444' : '#22c55e'}">${diff}</td>

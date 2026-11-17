@@ -136,9 +136,9 @@ app.get('/api/stats', (req, res) => {
 app.get('/api/results', (req, res) => {
   try {
     const filters = {
-      status: req.query.status || '',
-      account_no: req.query.account_no || '',
-      date: req.query.date || ''
+      status: (req.query.status || '').trim(),
+      account_no: (req.query.account_no || '').trim(),
+      date: (req.query.date || '').trim()
     };
     const results = db ? db.queryResults(filters) : [];
     res.json({ count: results.length, results });
@@ -288,11 +288,19 @@ app.post('/api/jobs/run-bankrecn', async (req, res) => {
     const runner = getRunner();
     const catalog = runner.catalog;
 
-    // Ensure seed data is present
+    // Ensure seed data is present (apply requested busdate to valid seed records at TXN-DATE cols 29-36)
     const testdataDir = path.join(MAINFRAME_DIR, 'testdata');
+    const applyBusDate = (records) => {
+      if (!/^\d{8}$/.test(busdate)) return records;
+      return records.map(line =>
+        line.length >= 36 && line.slice(28, 36) === '20260930'
+          ? line.slice(0, 28) + busdate + line.slice(36)
+          : line
+      );
+    };
     const seedRecords = fs.readFileSync(path.join(testdataDir, 'ACCTMSTR_SEED.dat'), 'utf8').split(/\r?\n/).filter(l => l.length > 0);
-    const coreRecords = fs.readFileSync(path.join(testdataDir, 'CORETXN_INPUT.dat'), 'utf8').split(/\r?\n/).filter(l => l.length > 0);
-    const bankRecords = fs.readFileSync(path.join(testdataDir, 'BANKTXN_INPUT.dat'), 'utf8').split(/\r?\n/).filter(l => l.length > 0);
+    const coreRecords = applyBusDate(fs.readFileSync(path.join(testdataDir, 'CORETXN_INPUT.dat'), 'utf8').split(/\r?\n/).filter(l => l.length > 0));
+    const bankRecords = applyBusDate(fs.readFileSync(path.join(testdataDir, 'BANKTXN_INPUT.dat'), 'utf8').split(/\r?\n/).filter(l => l.length > 0));
 
     const cat = catalog.loadCatalog();
 
