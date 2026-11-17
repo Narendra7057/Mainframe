@@ -1,0 +1,16 @@
+
+MAINFRAME BANK - TRANSACTION EXCEPTION REPORT                              PAGE: 0001
+====================================================================================================================================
+STATUS              ACCOUNT NO   TXN REFERENCE     CORE AMOUNT     BANK AMOUNT     DIFF          RSN   ACCOUNT NAME
+------------------------------------------------------------------------------------------------------------------------------------
+AMOUNT-MISMATCH     100000000001 TXN000000000105           $150.00         $155.00        -$5.00 M001  John Doe
+MISSING-IN-BANK     100000000002 TXN000000000106           $300.00           $0.00      +$300.00 B001  Jane Smith
+MISSING-IN-BANK     100000000003 TXN000000000107           $100.00           $0.00      +$100.00 B001  Alice Johnson
+DUPLICATE           100000000003 TXN000000000107           $100.00           $0.00      +$100.00 D001  Alice Johnson
+MISSING-IN-CORE     100000000005 TXN000000000201             $0.00         $450.00      -$450.00 C001  Carol White
+MISSING-IN-CORE     100000000006 TXN000000000202             $0.00         $200.00      -$200.00 C001  David Brown
+DUPLICATE           100000000006 TXN000000000202             $0.00         $200.00      -$200.00 D002  David Brown
+MISSING-IN-BANK     999999999999 TXN000000000108            $75.00           $0.00       +$75.00 B001  UNKNOWN ACCT
+------------------------------------------------------------------------------------------------------------------------------------
+TOTAL EXCEPTION TRANSACTIONS: 8
+END OF EXCEPTION TRANSACTIONS REPORT

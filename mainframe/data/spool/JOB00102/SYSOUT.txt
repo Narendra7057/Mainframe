@@ -1,0 +1,44 @@
+==================================================
+TXNVALID: TRANSACTION VALIDATION STARTED
+TXNVALID: VALIDATION SUMMARY
+  TOTAL READ     : 000012
+  VALID (GOOD)   : 000010
+  REJECTED       : 000002
+==================================================
+TXNVALID: REJECTS DETECTED (RC=04)
+==================================================
+RECONCIL: COMPLETED RECONCILIATION SUMMARY
+  TOTAL CORE TXNS  : 00000010
+  TOTAL BANK TXNS  : 00000010
+  MATCHED TXNS     : 00000006
+  AMOUNT MISMATCH  : 00000001
+  MISSING IN BANK  : 00000002
+  MISSING IN CORE  : 00000002
+  DUPLICATE TXNS   : 00000002
+  TOTAL EXCEPTIONS : 00000007
+==================================================
+==================================================
+RECLOAD: PREPARING DATABASE INGESTION STREAM
+RECLOAD: DATABASE INGEST DATASET GENERATED
+  ROWS PREPARED   : 000013
+==================================================
+==================================================
+RECRPT: REPORT GENERATION COMPLETED
+  MATCHED ROWS    : 000006
+  EXCEPTION ROWS  : 000007
+==================================================
+*** SYSOUT DATASET: BANK.PROD.RECON.RPTSUM(0) ***
+MAINFRAME BANK - NIGHTLY RECONCILIATION SUMMARY REPORT                    PAGE: 0001
+====================================================================================================================================
+METRIC / CATEGORY              TOTAL COUNT       TOTAL AMOUNT ($)      NOTES
+------------------------------------------------------------------------------------------------------------------------------------
+TOTAL-CORE-TXN                10        $           0.00     AUDITED TIE-OUT
+TOTAL-BANK-TXN                10        $           0.00     AUDITED TIE-OUT
+MATCHED-TXN                    6        $        3105.00     AUDITED TIE-OUT
+AMOUNT-MISMATCH                1        $         750.00     AUDITED TIE-OUT
+MISSING-IN-BANK                2        $        1725.00     AUDITED TIE-OUT
+MISSING-IN-CORE                2        $        1485.00     AUDITED TIE-OUT
+DUPLICATE-TXN                  2        $           0.00     AUDITED TIE-OUT
+TOTAL-EXCEPTIONS               7        $           0.00     AUDITED TIE-OUT
+------------------------------------------------------------------------------------------------------------------------------------
+END OF RECONCILIATION SUMMARY REPORT

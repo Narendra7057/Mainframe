@@ -1,8 +1,8 @@
 {
   "jobId": "JOB00102",
-  "jobName": "DUP01",
-  "status": "ABENDED",
-  "maxRC": 16,
-  "startTime": "2026-11-17T10:43:49.815Z",
-  "endTime": "2026-11-17T10:43:49.816Z"
+  "jobName": "BANKRECN",
+  "status": "COMPLETED",
+  "maxRC": 4,
+  "startTime": "2026-11-17T17:47:22.513Z",
+  "endTime": "2026-11-17T17:47:23.622Z"
 }

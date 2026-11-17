@@ -27,7 +27,7 @@ RECRPT: REPORT GENERATION COMPLETED
   MATCHED ROWS    : 000004
   EXCEPTION ROWS  : 000008
 ==================================================
-*** SYSOUT DATASET: BANK.TEST.RECON.RPTSUM(0) ***
+*** SYSOUT DATASET: BANK.PROD.RECON.RPTSUM(0) ***
 MAINFRAME BANK - NIGHTLY RECONCILIATION SUMMARY REPORT                    PAGE: 0001
 ====================================================================================================================================
 METRIC / CATEGORY              TOTAL COUNT       TOTAL AMOUNT ($)      NOTES

@@ -1,0 +1,15 @@
+
+MAINFRAME BANK - NIGHTLY RECONCILIATION SUMMARY REPORT                    PAGE: 0001
+====================================================================================================================================
+METRIC / CATEGORY              TOTAL COUNT       TOTAL AMOUNT ($)      NOTES
+------------------------------------------------------------------------------------------------------------------------------------
+TOTAL-CORE-TXN                 9        $           0.00     AUDITED TIE-OUT
+TOTAL-BANK-TXN                 8        $           0.00     AUDITED TIE-OUT
+MATCHED-TXN                    4        $        2800.50     AUDITED TIE-OUT
+AMOUNT-MISMATCH                1        $         150.00     AUDITED TIE-OUT
+MISSING-IN-BANK                3        $         475.00     AUDITED TIE-OUT
+MISSING-IN-CORE                2        $         650.00     AUDITED TIE-OUT
+DUPLICATE-TXN                  2        $           0.00     AUDITED TIE-OUT
+TOTAL-EXCEPTIONS               8        $           0.00     AUDITED TIE-OUT
+------------------------------------------------------------------------------------------------------------------------------------
+END OF RECONCILIATION SUMMARY REPORT
