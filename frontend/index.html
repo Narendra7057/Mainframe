@@ -234,7 +234,70 @@
           <textarea class="jcl-editor" id="jcl-editor" spellcheck="false" placeholder="//MYJOB JOB (ACCT01),'MY TEST',CLASS=A&#10;//STEP01  EXEC PGM=IEFBR14&#10;//SYSOUT  DD SYSOUT=*"></textarea>
         </div>
 
+        <!-- Input Data Upload Section -->
+        <div class="data-upload-section" id="data-upload-section">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+            <h2 class="section-title" style="margin-bottom:0">Input Data Files</h2>
+            <button class="btn-ghost" id="refresh-data-info-btn" title="Refresh file info">↻ Refresh</button>
+          </div>
+          <p class="data-upload-desc">Upload <code>CORETXN_INPUT.dat</code> and <code>BANKTXN_INPUT.dat</code> to seed the BANKRECN reconciliation job. Records must be <strong>80 chars wide</strong> (RECFM=FB, LRECL=80).</p>
+          <div class="data-upload-grid">
+
+            <!-- CORETXN -->
+            <div class="dat-upload-card" id="dat-card-core">
+              <div class="dat-card-header">
+                <div class="dat-card-icon">🏦</div>
+                <div class="dat-card-meta">
+                  <div class="dat-card-title">CORETXN_INPUT.dat</div>
+                  <div class="dat-card-subtitle">Core Banking Transactions</div>
+                </div>
+                <button class="btn-ghost dat-restore-btn" id="restore-core-btn" data-file="CORETXN_INPUT.dat" style="display:none" title="Restore previous version">⟲ Restore</button>
+              </div>
+              <div class="dat-info-row" id="dat-info-core">
+                <span class="dat-info-badge">Loading…</span>
+              </div>
+              <div class="dat-preview" id="dat-preview-core" style="display:none"></div>
+              <div class="dat-drop-zone" id="drop-core" data-target="CORETXN_INPUT.dat">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <span>Drag &amp; drop <code>.dat</code> file here, or</span>
+                <label class="btn-primary dat-browse-btn" for="input-core">Browse File</label>
+                <input type="file" id="input-core" accept=".dat" style="display:none" data-target="CORETXN_INPUT.dat" />
+              </div>
+              <div class="dat-upload-status" id="status-core"></div>
+            </div>
+
+            <!-- BANKTXN -->
+            <div class="dat-upload-card" id="dat-card-bank">
+              <div class="dat-card-header">
+                <div class="dat-card-icon">🏧</div>
+                <div class="dat-card-meta">
+                  <div class="dat-card-title">BANKTXN_INPUT.dat</div>
+                  <div class="dat-card-subtitle">Bank Channel Transactions</div>
+                </div>
+                <button class="btn-ghost dat-restore-btn" id="restore-bank-btn" data-file="BANKTXN_INPUT.dat" style="display:none" title="Restore previous version">⟲ Restore</button>
+              </div>
+              <div class="dat-info-row" id="dat-info-bank">
+                <span class="dat-info-badge">Loading…</span>
+              </div>
+              <div class="dat-preview" id="dat-preview-bank" style="display:none"></div>
+              <div class="dat-drop-zone" id="drop-bank" data-target="BANKTXN_INPUT.dat">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <span>Drag &amp; drop <code>.dat</code> file here, or</span>
+                <label class="btn-primary dat-browse-btn" for="input-bank">Browse File</label>
+                <input type="file" id="input-bank" accept=".dat" style="display:none" data-target="BANKTXN_INPUT.dat" />
+              </div>
+              <div class="dat-upload-status" id="status-bank"></div>
+            </div>
+
+          </div>
+          <div class="dat-format-hint">
+            <strong>Record format (80 chars per line):</strong>
+            <code>ACCT(12) + TXN-REF(16) + DATE/8(YYYYMMDD) + TYPE(2) + AMT(13) + CURR(3) + CHAN(4) + FILLER(22)</code>
+          </div>
+        </div>
+
         <!-- BANKRECN params -->
+        <div class="params-section" id="bankrecn-params">
         <div class="params-section" id="bankrecn-params">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
             <h2 class="section-title" style="margin-bottom:0">BANKRECN Parameters</h2>
@@ -474,6 +537,6 @@
     </div>
   </div>
 
-  <script src="app.js?v=3"></script>
+  <script src="app.js?v=4"></script>
 </body>
 </html>

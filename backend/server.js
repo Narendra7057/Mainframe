@@ -43,6 +43,16 @@ const upload = multer({
   }
 });
 
+// ─── Multer: .dat input data upload ──────────────────────────────────────────
+const uploadDat = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB max
+  fileFilter: (req, file, cb) => {
+    if (file.originalname.toLowerCase().endsWith('.dat')) cb(null, true);
+    else cb(new Error('Only .dat files are allowed for input data upload'));
+  }
+});
+
 // ─── Database Singleton ───────────────────────────────────────────────────────
 let db;
 try {
@@ -100,6 +110,95 @@ app.get('/api/health', (req, res) => {
     system: 'Mainframe Bank Reconciliation System',
     version: '1.0.0'
   });
+});
+
+// ── Input Data File Info ──────────────────────────────────────────────────────
+app.get('/api/data/info', (req, res) => {
+  const testdataDir = path.join(MAINFRAME_DIR, 'testdata');
+  const files = ['CORETXN_INPUT.dat', 'BANKTXN_INPUT.dat', 'ACCTMSTR_SEED.dat'];
+  const info = {};
+  files.forEach(name => {
+    const fp = path.join(testdataDir, name);
+    try {
+      const stat = fs.statSync(fp);
+      const content = fs.readFileSync(fp, 'utf8');
+      const lines = content.split(/\r?\n/).filter(l => l.trim().length > 0);
+      info[name] = {
+        exists: true,
+        size: stat.size,
+        modified: stat.mtime.toISOString(),
+        lineCount: lines.length,
+        preview: lines.slice(0, 3)
+      };
+    } catch (e) {
+      info[name] = { exists: false };
+    }
+  });
+  res.json({ files: info });
+});
+
+// ── Upload Input Data (.dat) ──────────────────────────────────────────────────
+const ALLOWED_DAT_FILES = new Set(['CORETXN_INPUT.dat', 'BANKTXN_INPUT.dat', 'ACCTMSTR_SEED.dat']);
+
+app.post('/api/data/upload', uploadDat.single('datFile'), (req, res) => {
+  try {
+    if (!req.file) return res.status(400).json({ error: 'No .dat file provided' });
+
+    const targetName = (req.body.target || req.file.originalname).replace(/[^a-zA-Z0-9_.\-]/g, '');
+    if (!ALLOWED_DAT_FILES.has(targetName)) {
+      return res.status(400).json({ error: `Invalid target. Allowed: ${[...ALLOWED_DAT_FILES].join(', ')}` });
+    }
+
+    const content = req.file.buffer.toString('utf8');
+    const lines = content.split(/\r?\n/).filter(l => l.trim().length > 0);
+
+    if (lines.length === 0) return res.status(400).json({ error: 'File is empty' });
+
+    // Warn if records look wrong (LRECL=80)
+    const badLines = lines.filter(l => l.length !== 80);
+    const warnings = badLines.length > 0
+      ? [`${badLines.length} line(s) are not exactly 80 chars (LRECL=80 required)`]
+      : [];
+
+    const testdataDir = path.join(MAINFRAME_DIR, 'testdata');
+    const destPath = path.join(testdataDir, targetName);
+
+    // Backup existing file
+    if (fs.existsSync(destPath)) {
+      fs.copyFileSync(destPath, destPath + '.bak');
+    }
+
+    fs.writeFileSync(destPath, content, 'utf8');
+
+    console.log(`[DATA] Uploaded ${targetName}: ${lines.length} records`);
+    res.json({
+      success: true,
+      target: targetName,
+      lineCount: lines.length,
+      size: req.file.size,
+      warnings
+    });
+  } catch (e) {
+    console.error('Data upload error:', e.message);
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// ── Restore Input Data backup ─────────────────────────────────────────────────
+app.post('/api/data/restore/:name', (req, res) => {
+  try {
+    const name = req.params.name.replace(/[^a-zA-Z0-9_.\-]/g, '');
+    if (!ALLOWED_DAT_FILES.has(name)) return res.status(400).json({ error: 'Invalid file name' });
+    const testdataDir = path.join(MAINFRAME_DIR, 'testdata');
+    const bakPath = path.join(testdataDir, name + '.bak');
+    const destPath = path.join(testdataDir, name);
+    if (!fs.existsSync(bakPath)) return res.status(404).json({ error: 'No backup found for ' + name });
+    fs.copyFileSync(bakPath, destPath);
+    fs.unlinkSync(bakPath);
+    res.json({ success: true, message: `${name} restored from backup` });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
 });
 
 // ── Dashboard Stats ───────────────────────────────────────────────────────────

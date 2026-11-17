@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initWebSocket();
   initButtons();
   initTemplateSelect();
+  initDataUpload();
   loadDashboardStats();
 });
 
@@ -85,6 +86,7 @@ function switchTab(tab) {
   if (tab === 'catalog') loadCatalog();
   if (tab === 'dashboard') loadDashboardStats();
   if (tab === 'spool')   loadSpoolJobs();
+  if (tab === 'jcl')     loadDataInfo();
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -849,3 +851,162 @@ function toast(type, message) {
 window.readDataset = readDataset;
 window.viewSpool = viewSpool;
 window.loadSpool = loadSpool;
+
+// ═══════════════════════════════════════════════════════════════════
+// Input Data File Upload (.dat)
+// ═══════════════════════════════════════════════════════════════════
+const DAT_CONFIGS = [
+  { id: 'core', target: 'CORETXN_INPUT.dat', inputId: 'input-core', dropId: 'drop-core', infoId: 'dat-info-core', previewId: 'dat-preview-core', statusId: 'status-core', restoreId: 'restore-core-btn', cardId: 'dat-card-core' },
+  { id: 'bank', target: 'BANKTXN_INPUT.dat', inputId: 'input-bank', dropId: 'drop-bank', infoId: 'dat-info-bank', previewId: 'dat-preview-bank', statusId: 'status-bank', restoreId: 'restore-bank-btn', cardId: 'dat-card-bank' }
+];
+
+function initDataUpload() {
+  loadDataInfo();
+  document.getElementById('refresh-data-info-btn').onclick = loadDataInfo;
+
+  DAT_CONFIGS.forEach(cfg => {
+    const fileInput = document.getElementById(cfg.inputId);
+    const dropZone  = document.getElementById(cfg.dropId);
+    const restoreBtn = document.getElementById(cfg.restoreId);
+
+    // File input change
+    fileInput.addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (file) uploadDatFile(file, cfg);
+      fileInput.value = '';
+    });
+
+    // Click on drop zone opens file picker (if not clicking the label)
+    dropZone.addEventListener('click', e => {
+      if (e.target.tagName === 'LABEL' || e.target.closest('label')) return;
+      fileInput.click();
+    });
+
+    // Drag & drop events
+    dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+    dropZone.addEventListener('drop', e => {
+      e.preventDefault();
+      dropZone.classList.remove('drag-over');
+      const file = e.dataTransfer.files[0];
+      if (!file) return;
+      if (!file.name.toLowerCase().endsWith('.dat')) {
+        setDatStatus(cfg, 'err', `✕ Only .dat files allowed (got: ${file.name})`);
+        return;
+      }
+      uploadDatFile(file, cfg);
+    });
+
+    // Restore button
+    restoreBtn.addEventListener('click', () => restoreDatFile(cfg));
+  });
+}
+
+async function loadDataInfo() {
+  try {
+    const resp = await fetch(`${API}/data/info`, { cache: 'no-store' });
+    const data = await resp.json();
+    DAT_CONFIGS.forEach(cfg => {
+      const info = (data.files || {})[cfg.target];
+      renderDatInfo(cfg, info);
+    });
+  } catch (e) {
+    DAT_CONFIGS.forEach(cfg => {
+      document.getElementById(cfg.infoId).innerHTML = `<span class="dat-info-badge warn">⚠ Could not load info</span>`;
+    });
+  }
+}
+
+function renderDatInfo(cfg, info) {
+  const infoEl    = document.getElementById(cfg.infoId);
+  const previewEl = document.getElementById(cfg.previewId);
+
+  if (!info || !info.exists) {
+    infoEl.innerHTML = `<span class="dat-info-badge warn">⚠ File not found</span>`;
+    previewEl.style.display = 'none';
+    return;
+  }
+
+  const sizeKB = (info.size / 1024).toFixed(1);
+  const mod = new Date(info.modified).toLocaleString('en-IN');
+
+  infoEl.innerHTML = `
+    <span class="dat-info-badge ok">✓ ${info.lineCount} records</span>
+    <span class="dat-info-badge">${sizeKB} KB</span>
+    <span class="dat-info-badge">Modified: ${mod}</span>
+  `;
+
+  if (info.preview && info.preview.length) {
+    previewEl.style.display = 'block';
+    previewEl.textContent = info.preview.map((l, i) => `${i + 1}  ${l}`).join('\n');
+  } else {
+    previewEl.style.display = 'none';
+  }
+}
+
+async function uploadDatFile(file, cfg) {
+  setDatStatus(cfg, '', `⟳ Uploading ${file.name}…`);
+  setCardClass(cfg, '');
+
+  const formData = new FormData();
+  formData.append('datFile', file);
+  formData.append('target', cfg.target);
+
+  try {
+    const resp = await fetch(`${API}/data/upload`, { method: 'POST', body: formData });
+    const data = await resp.json();
+
+    if (!resp.ok || data.error) {
+      setDatStatus(cfg, 'err', `✕ ${data.error || 'Upload failed'}`);
+      setCardClass(cfg, 'upload-error');
+      toast('error', `${cfg.target}: ${data.error || 'Upload failed'}`);
+      return;
+    }
+
+    const warnings = data.warnings && data.warnings.length ? ` ⚠ ${data.warnings[0]}` : '';
+    setDatStatus(cfg, warnings ? 'warn' : 'ok', `✓ ${data.lineCount} records uploaded${warnings}`);
+    setCardClass(cfg, 'upload-success');
+    toast('success', `${cfg.target} uploaded — ${data.lineCount} records`);
+
+    // Show restore button
+    document.getElementById(cfg.restoreId).style.display = '';
+
+    // Refresh info
+    await loadDataInfo();
+    feedLog(`Data file uploaded: ${cfg.target} (${data.lineCount} records)`, 'success');
+  } catch (e) {
+    setDatStatus(cfg, 'err', `✕ Network error: ${e.message}`);
+    setCardClass(cfg, 'upload-error');
+    toast('error', 'Upload failed: ' + e.message);
+  }
+}
+
+async function restoreDatFile(cfg) {
+  if (!confirm(`Restore previous version of ${cfg.target}?`)) return;
+  try {
+    const resp = await fetch(`${API}/data/restore/${encodeURIComponent(cfg.target)}`, { method: 'POST' });
+    const data = await resp.json();
+    if (!resp.ok || data.error) {
+      toast('error', data.error || 'Restore failed');
+      return;
+    }
+    setDatStatus(cfg, 'ok', `✓ Restored previous version`);
+    setCardClass(cfg, '');
+    document.getElementById(cfg.restoreId).style.display = 'none';
+    toast('success', `${cfg.target} restored`);
+    await loadDataInfo();
+  } catch (e) {
+    toast('error', 'Restore failed: ' + e.message);
+  }
+}
+
+function setDatStatus(cfg, cls, msg) {
+  const el = document.getElementById(cfg.statusId);
+  el.className = `dat-upload-status ${cls}`;
+  el.textContent = msg;
+}
+
+function setCardClass(cfg, cls) {
+  const card = document.getElementById(cfg.cardId);
+  card.className = `dat-upload-card ${cls}`;
+}
