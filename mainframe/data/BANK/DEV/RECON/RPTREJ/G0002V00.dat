@@ -1,0 +1,14 @@
+
+MAINFRAME BANK - TRANSACTION REJECT / VALIDATION REPORT                    PAGE: 0001
+====================================================================================================================================
+CODE  ERROR DESCRIPTION               REJECTED RECORD DATA
+------------------------------------------------------------------------------------------------------------------------------------
+E001  ACCOUNT NUMBER IS BLANK                          TXN000000000901 20260930DR0000000010000USDATM                       
+E002  TRANSACTION REF IS BLANK             100000000001                20260930DR0000000010000USDATM                       
+E005  INVALID MONTH IN DATE                100000000001TXN000000000903 20261345DR0000000010000USDATM                       
+E008  AMOUNT FIELD IS NOT NUMERIC          100000000001TXN000000000904 20260930DR0000000012A00USDATM                       
+E009  AMOUNT CANNOT BE ZERO                100000000001TXN000000000905 20260930DR0000000000000USDATM                       
+E007  INVALID TXN TYPE (MUST BE DR/CR)     100000000001TXN000000000906 20260930XX0000000010000USDATM                       
+------------------------------------------------------------------------------------------------------------------------------------
+TOTAL REJECTED TRANSACTIONS: 6
+END OF REJECT REPORT

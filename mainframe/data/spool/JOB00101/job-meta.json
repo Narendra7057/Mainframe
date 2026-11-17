@@ -1,8 +1,8 @@
 {
   "jobId": "JOB00101",
-  "jobName": "ALLOCDSN",
+  "jobName": "BANKRECN",
   "status": "COMPLETED",
-  "maxRC": 0,
-  "startTime": "2026-10-21T13:29:05.463Z",
-  "endTime": "2026-10-21T13:29:05.497Z"
+  "maxRC": 4,
+  "startTime": "2026-11-17T11:04:13.109Z",
+  "endTime": "2026-11-17T11:04:14.231Z"
 }
